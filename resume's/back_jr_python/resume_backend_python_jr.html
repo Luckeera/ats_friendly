@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Valente - Desenvolvedor Back-End Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.3;
+            color: #000;
+            background: #f5f5f5;
+            font-size: 10.5pt;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 0.75in;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                padding: 0.5in;
+                margin: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .header .title {
+            font-size: 11pt;
+            margin-bottom: 6px;
+            font-weight: normal;
+        }
+
+        .contact {
+            font-size: 9.5pt;
+            line-height: 1.4;
+        }
+
+        .contact a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+        }
+
+        /* Summary */
+        .summary {
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        /* Skills */
+        .skills-grid {
+            line-height: 1.5;
+        }
+
+        .skill-category {
+            margin-bottom: 4px;
+        }
+
+        .skill-category strong {
+            font-weight: bold;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 10px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
+
+        .job-title-company {
+            font-weight: bold;
+            font-size: 10.5pt;
+        }
+
+        .job-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .job-position {
+            font-style: italic;
+            margin-bottom: 4px;
+            font-size: 10pt;
+        }
+
+        .job ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+
+        .job li {
+            margin-bottom: 3px;
+            line-height: 1.35;
+        }
+
+        /* Projects */
+        .project {
+            margin-bottom: 8px;
+        }
+
+        .project-header {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .project-header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .project-description {
+            line-height: 1.4;
+        }
+
+        .project ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+
+        .project li {
+            margin-bottom: 3px;
+            line-height: 1.35;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 6px;
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .education-school {
+            font-weight: bold;
+        }
+
+        .education-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .education-degree {
+            font-size: 10pt;
+        }
+
+        /* Metrics highlighting */
+        strong.metric {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="resume-container">
+        <div class="header">
+            <h1>Lucas Valente de Lima</h1>
+            <div class="title">Desenvolvedor Back-End Python | Django & FastAPI | AWS</div>
+            <div class="contact">
+                <a href="mailto:lvldgls@gmail.com">lvldgls@gmail.com</a> |
+                <a href="https://www.linkedin.com/in/lucas-lima-bb568b355/" target="_blank">LinkedIn</a> |
+                <a href="https://github.com/Luckeera" target="_blank">GitHub</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Resumo Profissional</div>
+            <div class="summary">
+                Desenvolvedor Back-End Python com experiência em desenvolvimento e manutenção de APIs RESTful escaláveis utilizando Django REST Framework e FastAPI. Atuação sólida em ambientes AWS (EC2, Lambda, S3, RDS, CloudWatch, IAM), com histórico comprovado de otimização de performance e implementação de microsserviços que suportam <strong>330.000+ usuários</strong>. Experiência com testes automatizados, CI/CD (GitHub Actions), Docker e práticas de segurança. Certificado AWS Cloud Practitioner, com inglês fluente e graduação em Análise e Desenvolvimento de Sistemas.
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Habilidades Técnicas</div>
+            <div class="skills-grid">
+                <div class="skill-category"><strong>Linguagens & Frameworks:</strong> Python 3.x, Django, Django REST Framework (DRF), FastAPI, Node.js (Fastify, Express).</div>
+                <div class="skill-category"><strong>APIs & Arquitetura:</strong> APIs REST (design, versionamento, documentação), Microsserviços, Arquitetura Distribuída, Clean Architecture, Serverless.</div>
+                <div class="skill-category"><strong>Bancos de Dados:</strong> PostgreSQL, MySQL, Redis, SQLite, MongoDB (noções).</div>
+                <div class="skill-category"><strong>AWS & Cloud:</strong> EC2, Lambda, S3, RDS, CloudWatch, IAM, Glue, Athena, QuickSight.</div>
+                <div class="skill-category"><strong>DevOps & Ferramentas:</strong> Docker, Docker Compose, CI/CD (GitHub Actions), Git (branches, PRs, versionamento semântico), Terraform, Linux.</div>
+                <div class="skill-category"><strong>Qualidade & Segurança:</strong> Testes Automatizados (Pytest, unittest), Autenticação (JWT, OAuth2), OWASP, Monitoramento e Observabilidade (CloudWatch).</div>
+                <div class="skill-category"><strong>Mensageria & Cache:</strong> BullMQ, Redis, SQS/SNS (noções), Processamento Assíncrono.</div>
+                <div class="skill-category"><strong>Metodologias:</strong> Scrum, Kanban, Code Review, Documentação Técnica, Jira.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Experiência Profissional</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">V3LOZ (UNAMA - Grupo SER)</div>
+                    <div class="job-date">Maio 2025 - Jan 2026</div>
+                </div>
+                <div class="job-position">Desenvolvedor Back-End Python (Django REST Framework)</div>
+                <ul>
+                    <li>Desenvolveu e manteve APIs RESTful com <strong>Django REST Framework (Python 3.x)</strong>, escalando o sistema de laboratórios para suportar <strong>330.000+ usuários ativos</strong> em todas as unidades do Grupo SER.</li>
+                    <li>Liderou refatoração de monólito para <strong>microsserviços</strong>, desacoplando backend (Django REST) do frontend, resultando em aumento de <strong>40% na performance</strong> de carregamento.</li>
+                    <li>Implementou <strong>CI/CD com GitHub Actions</strong> e Docker, padronizando o processo de deploy e reduzindo falhas em produção em <strong>70%</strong> e custos em <strong>40%</strong>.</li>
+                    <li>Otimizou consultas SQL (<strong>PostgreSQL</strong>) e validações em Models/Serializers, reduzindo a latência média das requisições em <strong>50%</strong>.</li>
+                    <li>Implementou <strong>testes automatizados</strong> e participou ativamente de <strong>code reviews</strong> e decisões de arquitetura em equipe ágil de <strong>9+ desenvolvedores</strong> (Scrum/Kanban).</li>
+                    <li>Criou <strong>documentação técnica</strong> de APIs e decisões arquiteturais, facilitando onboarding e manutenção do sistema.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Compass UOL</div>
+                    <div class="job-date">Maio 2025 - Out 2025</div>
+                </div>
+                <div class="job-position">Desenvolvedor Python AWS & Líder de Squad</div>
+                <ul>
+                    <li><strong>Liderou Squad de 4 engenheiros</strong>, conduzindo code reviews, discussões técnicas e garantindo 100% dos prazos de entrega.</li>
+                    <li>Desenvolveu automações e serviços em <strong>Python</strong> com <strong>AWS Lambda</strong> para orquestração de dados e integração com S3, <strong>RDS</strong> e CloudWatch.</li>
+                    <li>Projetou pipelines de processamento com <strong>AWS Glue (PySpark)</strong>, automatizando ingestão de dados e reduzindo processamento manual em <strong>~15 horas semanais</strong>.</li>
+                    <li>Aplicou práticas de <strong>monitoramento e observabilidade</strong> com CloudWatch, além de FinOps gerando economia de <strong>20% em custos</strong> de infraestrutura AWS.</li>
+                    <li>Implementou <strong>CI/CD (GitHub Actions)</strong> e utilizou desenvolvimento assistido por IA, entregando features <strong>3x mais rápido</strong>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Projetos & Portfólio Técnico</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Sistema de Automação Jurídica (V3LOZ)</div>
+                    <div class="job-date">2025</div>
+                </div>
+                <div class="job-position">Desenvolvedor Back-End Python (Django REST Framework)</div>
+                <ul>
+                    <li>Arquitetou e desenvolveu <strong>API RESTful</strong> com <strong>Django REST Framework (Python 3.x)</strong>, voltada para automação e centralização de dados processuais de <strong>30+ tribunais</strong> brasileiros.</li>
+                    <li>Implementou autenticação e autorização baseada em <strong>JWT</strong>, com segregação de permissões por perfil, garantindo <strong>segurança</strong> no acesso a endpoints sensíveis.</li>
+                    <li>Aplicou princípios de <strong>Clean Architecture</strong>: separação em services, serializers e viewsets, reduzindo tempo de manutenção em <strong>~30%</strong>.</li>
+                    <li>Sistema processando <strong>10k–50k requisições diárias</strong>, com arquitetura projetada para escalar além de <strong>1M+ requisições/dia</strong>.</li>
+                    <li>Aplicou boas práticas de engenharia: padronização RESTful, <strong>versionamento de endpoints</strong>, validação estruturada e <strong>documentação técnica</strong>, reduzindo retrabalho em <strong>35%</strong>.</li>
+                    <li>Estruturou código orientado à escalabilidade com preparação para <strong>cache distribuído (Redis)</strong> e <strong>processamento assíncrono</strong>.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">App Leão (Fiscalização & Transparência)</div>
+                    <div class="job-date">2025</div>
+                </div>
+                <div class="job-position">Desenvolvedor Back-End & DevOps</div>
+                <ul>
+                    <li>Arquitetou backend em <strong>Node.js com Fastify</strong>, alcançando throughput <strong>2x superior ao Express</strong>, com <strong>APIs REST</strong> bem documentadas.</li>
+                    <li>Implementou arquitetura orientada a eventos com <strong>mensageria (BullMQ)</strong> e <strong>cache (Redis)</strong> para processamento assíncrono escalável.</li>
+                    <li>Configurou esteira completa de <strong>CI/CD e Docker</strong>, aumentando a velocidade de deploy em <strong>80%</strong>.</li>
+                    <li>Aplicou práticas de <strong>segurança (OWASP)</strong>: rate limiting, CORS, logging seguro e validação de entrada.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Formação Acadêmica, Idiomas & Certificações</div>
+            <div class="education-item">
+                <div class="education-header">
+                    <span class="education-school">Amazon Web Services (AWS)</span>
+                    <span class="education-date">Nov 2025</span>
+                </div>
+                <div class="education-degree"><strong>AWS Certified Cloud Practitioner</strong></div>
+            </div>
+
+            <div class="education-item" style="margin-top: 4px;">
+                <strong>Idiomas:</strong> Inglês (Fluente - Proficiência Profissional), Português (Nativo)
+            </div>
+
+            <div class="education-item">
+                <div class="education-header">
+                    <span class="education-school">Universidade da Amazônia (UNAMA)</span>
+                    <span class="education-date">Conclusão: Dez 2026</span>
+                </div>
+                <div class="education-degree">Tecnólogo em Análise e Desenvolvimento de Sistemas</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

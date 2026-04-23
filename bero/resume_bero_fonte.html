@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bero - Engenheiro de Software</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.3;
+            color: #000;
+            background: #f5f5f5;
+            font-size: 10.5pt;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 0.75in;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                padding: 0.5in;
+                margin: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .header .title {
+            font-size: 11pt;
+            margin-bottom: 6px;
+            font-weight: normal;
+        }
+
+        .contact {
+            font-size: 9.5pt;
+            line-height: 1.4;
+        }
+
+        .contact a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+        }
+
+        /* Summary */
+        .summary {
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        /* Skills */
+        .skills-grid {
+            line-height: 1.5;
+        }
+
+        .skill-category {
+            margin-bottom: 4px;
+        }
+
+        .skill-category strong {
+            font-weight: bold;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 10px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
+
+        .job-title-company {
+            font-weight: bold;
+            font-size: 10.5pt;
+        }
+
+        .job-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .job-position {
+            font-style: italic;
+            margin-bottom: 4px;
+            font-size: 10pt;
+        }
+
+        .job ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+
+        .job li {
+            margin-bottom: 3px;
+            line-height: 1.35;
+        }
+
+        /* Projects */
+        .project {
+            margin-bottom: 8px;
+        }
+
+        .project-header {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .project-header a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .project-description {
+            line-height: 1.4;
+        }
+
+        .project ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+
+        .project li {
+            margin-bottom: 3px;
+            line-height: 1.35;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 6px;
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .education-school {
+            font-weight: bold;
+        }
+
+        .education-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .education-degree {
+            font-size: 10pt;
+        }
+
+        /* Metrics highlighting */
+        strong.metric {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="resume-container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1>Lucas Valente de Lima</h1>
+            <div class="title">Engenheiro de Software Sênior</div>
+            <div class="contact">
+                <a href="mailto:lvldgls@gmail.com">lvldgls@gmail.com</a> |
+                <a href="https://github.com/Luckeera" target="_blank">github.com/Luckeera</a> 
+                
+                <!-- | <a href="https://bero.land" target="_blank">bero.land</a> -->
+            </div>
+        </div>
+
+        <!-- Resumo Profissional -->
+        <div class="section">
+            <div class="section-title">Resumo Profissional</div>
+            <div class="summary">
+                Engenheiro de Software Sênior Full-stack com <strong>1+ anos</strong> 
+                desenvolvendo aplicações com IA, sistemas distribuídos escaláveis e pipelines de dados de alta 
+                performance. Expertise comprovada arquitetando 
+                <strong>sistemas RAG (Retrieval-Augmented Generation) em produção</strong> com 
+                <strong>bancos de dados vetoriais (Qdrant, pgvector, Weaviate, FAISS)</strong>, 
+                <strong>integração com LLMs (OpenAI GPT-4, Anthropic Claude, Gemini)</strong>, 
+                <strong>ingestão de documentos, chunking, geração de embeddings e busca semântica</strong> alcançando 
+                <strong>40% de aumento em conversão</strong> e <strong>60% de redução em suporte</strong>. 
+                Proficiência profissional em <strong>TypeScript + React, Python + DjangoREST</strong> 
+                (testes de componentes com Jest/Vitest/React Testing Library, Pytest), 
+                <strong>backend Node.js/TypeScript</strong> (APIs REST/GraphQL, autenticação, cache) e 
+                <strong>PostgreSQL</strong> (design de schema, otimização de performance). 
+                Implantação de infraestrutura AWS (Lambda, ECS, S3, CloudWatch) com 
+                <strong>containers Docker</strong> e <strong>pipelines CI/CD</strong> (GitHub Actions, Vercel). 
+                Arquitetou pipelines ETL processando <strong>10M+ registros diariamente</strong>, 
+                liderou equipes de <strong>8+ engenheiros</strong>, escalou SaaS para <strong>330K+ usuarios</strong>
+                 e utilizou desenvolvimento assistido por IA para entregar features <strong>3x mais rápido</strong>.
+            </div>
+        </div>
+
+        <!-- Habilidades Técnicas -->
+        <div class="section">
+            <div class="section-title">Habilidades Técnicas</div>
+            <div class="skills-grid">
+                <div class="skill-category"><strong>IA & Dados:</strong> RAG (Retrieval-Augmented Generation), Bancos de Dados Vetoriais (Qdrant, pgvector, Weaviate, FAISS), Integração com LLMs (GPT-4, Claude), Embeddings, Document Chunking, Busca Semântica, Prompt Engineering</div>
+                <div class="skill-category"><strong>Linguagens & Frameworks:</strong> TypeScript, JavaScript, Node.js (Nest.js, Express.js), Go (Golang), Python, React, Next.js, Prisma ORM, tRPC</div>
+                <div class="skill-category"><strong>Dados & Infraestrutura:</strong> PostgreSQL, MongoDB, Redis, Elasticsearch, Kafka, Apache Airflow, GraphQL, REST APIs, WebSockets</div>
+                <div class="skill-category"><strong>Cloud & DevOps:</strong> AWS (Lambda, ECS, S3, RDS, CloudWatch), Docker, Kubernetes, Terraform, CI/CD (GitHub Actions, Vercel), Observabilidade (OpenTelemetry, ELK)</div>
+                <div class="skill-category"><strong>Testes & Práticas:</strong> Jest, Vitest, React Testing Library, TDD, Agile/Scrum, Liderança Técnica, Microsserviços, Arquitetura Orientada a Eventos</div>
+            </div>
+        </div>
+
+        <!-- Experiência Profissional -->
+        <div class="section">
+            <div class="section-title">Experiência Profissional</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Potato Labs</div>
+                    <div class="job-date">Julho 2025 - Presente</div>
+                </div>
+                <div class="job-position">Fundador & Engenheiro Líder</div>
+                <ul>
+                    <li>Arquitetou e implantou <strong>sistema RAG (Retrieval-Augmented Generation) em produção</strong> utilizando <strong>banco de dados vetorial Qdrant</strong>, API GPT-4, pipeline customizado de chunking/ingestão de documentos, embeddings semânticos e <strong>loops de avaliação/otimização de retrieval</strong> alcançando <strong>40% de aumento na taxa de conversão</strong>, <strong>85% de precisão nas respostas</strong> e <strong>60% de redução em chamados de suporte</strong></li>
+                    <li>Construiu plataforma SaaS full-stack com <strong>backend Go, frontend Next.js 14/React/TypeScript, PostgreSQL + Prisma, Redis, tRPC</strong>; implementou <strong>testes abrangentes</strong> (Vitest, Jest, React Testing Library) com <strong>80%+ de cobertura</strong>, escalando para <strong>500+ assinantes pagantes</strong>, <strong>6.000+ usuários</strong> e <strong>$50K+ MRR</strong></li>
+                    <li>Utilizou <strong>desenvolvimento assistido por IA</strong> (Claude Code, Copilot, MCP) para entregar features <strong>3x mais rápido (2-3 dias vs. 1-2 semanas)</strong>; implementou <strong>CI/CD (GitHub Actions, Vercel)</strong>, processamento de pagamentos e gamificação alcançando <strong>75% de retenção</strong></li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Cactus Data Inc.</div>
+                    <div class="job-date">Setembro 2022 - Agosto 2025</div>
+                </div>
+                <div class="job-position">Engenheiro de Software Sênior</div>
+                <ul>
+                    <li>Desenvolveu <strong>pipeline ETL de alto volume</strong> (<strong>Nest.JS, PostgreSQL, Kafka</strong>) processando <strong>10M+ registros diariamente</strong> de milhares de escolas K-12 com <strong>99,9% de precisão</strong>, habilitando analytics em tempo real para <strong>500+ distritos</strong> nacionalmente</li>
+                    <li>Arquitetou <strong>integração de API</strong> processando milhões de registros de alunos/funcionários (<strong>latência sub-500ms</strong>), desbloqueando segmento enterprise de <strong>$2M+ ARR</strong> e acelerando o ciclo de vendas em <strong>40%</strong></li>
+                    <li>Construiu <strong>20+ workflows ETL em produção</strong> (<strong>Python, Airflow DAGs, GraphQL</strong>) reduzindo tempo de ingestão de <strong>6 horas → 90 minutos (60% mais rápido)</strong>, eliminando <strong>40+ horas/semana de trabalho manual</strong>, economizando <strong>$120K anualmente</strong></li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Banana Bank</div>
+                    <div class="job-date">Junho 2021 - Agosto 2022</div>
+                </div>
+                <div class="job-position">Tech Lead</div>
+                <ul>
+                    <li>Liderou <strong>8+ engenheiros</strong> entregando MVP fintech <strong>2 semanas antes do prazo de 6 meses</strong>; liderou <strong>migração AWS</strong> (EC2, RDS, S3, Terraform) reduzindo deploy de <strong>4hrs → 45min (75%)</strong> e economizando <strong>$15K/mês</strong></li>
+                    <li>Arquitetou <strong>microsserviço Golang</strong> tolerante a falhas para processamento em lote de pagamentos (<strong>100K+ transações diárias, 99,9% uptime, latência sub-200ms, compatível com PCI-DSS</strong>) processando <strong>$10M+ de volume mensal</strong></li>
+                    <li>Construiu <strong>5+ microsserviços orientados a eventos</strong> (<strong>Express.js, Prisma, MongoDB, Kafka</strong>) para autorização de pagamentos e detecção de fraudes suportando <strong>50K+ usuários</strong>, prevenindo <strong>$200K+ em perdas por fraude</strong></li>
+                    <li>Corrigiu <strong>15+ vulnerabilidades críticas de segurança</strong> alcançando <strong>conformidade SOC 2</strong>; implementou stack de observabilidade (OpenTelemetry, ELK) reduzindo MTTR de <strong>2hrs → 15min</strong></li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Penguin Academy</div>
+                    <div class="job-date">Agosto 2020 - Junho 2021</div>
+                </div>
+                <div class="job-position">Engenheiro de Software</div>
+                <ul>
+                    <li>Re-arquitetou backend monolítico para <strong>microsserviços Nest.JS + PostgreSQL</strong> melhorando resposta da API de <strong>1.5s → 400ms (3x mais rápido)</strong>, escalando de <strong>10K para 35K+ usuários (250% de crescimento)</strong></li>
+                    <li>Construiu <strong>4+ microsserviços serverless AWS</strong> (Lambda, API Gateway, SQS, DynamoDB) incluindo gateway de pagamento Stripe processando <strong>$500K+ de receita mensal (99,95% de taxa de sucesso)</strong> e chat WebSocket (<strong>15K+ mensagens diárias</strong>)</li>
+                    <li>Projetou cache Redis e otimização de queries reduzindo carga do DB em <strong>60%</strong>, custos AWS em <strong>$8K/mês</strong>; implementou testes (Jest) alcançando <strong>85% de cobertura</strong>, reduzindo incidentes em produção em <strong>55%</strong></li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Parrot Languages</div>
+                    <div class="job-date">Março 2019 - Agosto 2020</div>
+                </div>
+                <div class="job-position">Engenheiro de Software</div>
+                <ul>
+                    <li>Arquitetou <strong>ecossistema de microsserviços</strong> para reconhecimento de fala com IA (<strong>Node.js, TypeScript, React</strong>) atendendo <strong>5.000+ alunos</strong> em <strong>50+ instituições</strong>, melhorando notas de pronúncia em <strong>35%</strong></li>
+                    <li>Construiu API gateway centralizado integrando <strong>Google Speech-to-Text, APIs de tradução e dicionário</strong> (<strong>Express.js, TypeORM, PostgreSQL</strong>) processando <strong>100K+ requisições/mês</strong> com <strong>99,5% de uptime</strong></li>
+                    <li>Desenvolveu algoritmo de análise de fala alcançando <strong>85% de precisão vs. avaliadores humanos</strong>, implantado via <strong>API REST Next.js</strong> processando <strong>50K+ avaliações/mês</strong></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Formação Acadêmica & Idiomas -->
+        <div class="section">
+            <div class="section-title">Formação Acadêmica & Idiomas</div>
+            <div class="education-item">
+                <strong>Bacharelado em Ciência da Computação</strong> | Random University | 2017 - 2021
+            </div>
+            <div class="education-item" style="margin-top: 4px;">
+                <strong>Idiomas:</strong> Inglês (Fluente - Proficiência Profissional), Português (Nativo)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

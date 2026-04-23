@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Valente - Engenheiro de Dados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.3;
+            color: #000;
+            background: #f5f5f5;
+            font-size: 10.5pt;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 0.6in 0.75in;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                padding: 0.5in;
+                margin: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .header .title {
+            font-size: 11pt;
+            margin-bottom: 6px;
+            font-weight: normal;
+        }
+
+        .contact {
+            font-size: 9.5pt;
+            line-height: 1.4;
+        }
+
+        .contact a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+        }
+
+        /* Summary */
+        .summary {
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        /* Skills */
+        .skills-grid {
+            line-height: 1.5;
+        }
+
+        .skill-category {
+            margin-bottom: 3px;
+        }
+
+        .skill-category strong {
+            font-weight: bold;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 10px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
+
+        .job-title-company {
+            font-weight: bold;
+            font-size: 10.5pt;
+        }
+
+        .job-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .job-position {
+            font-style: italic;
+            margin-bottom: 4px;
+            font-size: 10pt;
+        }
+
+        .job ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+
+        .job li {
+            margin-bottom: 3px;
+            line-height: 1.35;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 5px;
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .education-school {
+            font-weight: bold;
+        }
+
+        .education-date {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #333;
+        }
+
+        .education-degree {
+            font-size: 10pt;
+        }
+
+        strong.metric {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="resume-container">
+        <div class="header">
+            <h1>Lucas Valente de Lima</h1>
+            <div class="title">Engenheiro de Dados | Cloud, ETL & Analytics</div>
+            <div class="contact">
+                <a href="mailto:lvldgls@gmail.com">lvldgls@gmail.com</a> |
+                <a href="https://www.linkedin.com/in/lucas-lima-bb568b355/" target="_blank">LinkedIn</a> |
+                <a href="https://github.com/Luckeera" target="_blank">GitHub</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Resumo Profissional</div>
+            <div class="summary">
+                Engenheiro de Dados com experiência em projetar e otimizar pipelines de ETL/ELT com <strong>PySpark, Apache Spark e SQL avançado</strong> em ambiente Cloud. Atuação prática na construção de Data Lakes seguindo a <strong>arquitetura Medallion (Bronze → Silver → Gold)</strong>, com ingestão automatizada e refinamento de dados em larga escala. Experiência em <strong>modelagem dimensional (Star Schema)</strong>, criação de dashboards para BI e governança de dados. Perfil com forte viés de DevOps, implementando <strong>CI/CD para pipelines de dados</strong> e práticas de FinOps. Líder técnico com histórico de gestão de squads e entrega em ambientes críticos de alto volume. Certificado <strong>AWS Cloud Practitioner</strong>.
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Habilidades Técnicas</div>
+            <div class="skills-grid">
+                <div class="skill-category"><strong>Engenharia de Dados:</strong> PySpark, Apache Spark, Python, Pandas, SQL Avançado, ETL/ELT Pipelines, Modelagem Dimensional (Star Schema), Modelagem Relacional (Formas Normais), Arquitetura Medallion, Data Lake, Data Warehouse.</div>
+                <div class="skill-category"><strong>Cloud & Analytics:</strong> AWS (Glue, Lambda, S3, Athena, QuickSight, EC2, IAM, CloudWatch), Databricks (PySpark Notebooks, Unity Catalog), BI & Dashboards (QuickSight, Power BI).</div>
+                <div class="skill-category"><strong>DevOps & Governança:</strong> CI/CD (GitHub Actions), Docker, Terraform, Git, Governança de Dados, FinOps, Monitoramento.</div>
+                <div class="skill-category"><strong>Backend & Automação:</strong> Python (Django/DRF), Node.js (Fastify, Express), APIs RESTful, Serverless, Redis, Filas (BullMQ).</div>
+                <div class="skill-category"><strong>Ferramentas & Metodologias:</strong> Jira, Scrum/Kanban, Linux, PostgreSQL, MySQL, SQLite, Desenvolvimento assistido por IA (Claude Code, Copilot).</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Experiência Profissional</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Compass UOL</div>
+                    <div class="job-date">Maio 2025 - Out 2025</div>
+                </div>
+                <div class="job-position">Engenheiro de Dados Cloud & Líder de Squad</div>
+                <ul>
+                    <li><strong>Liderança Técnica:</strong> Liderou squad de <strong>4 engenheiros de dados</strong>, conduzindo code reviews, definindo padrões de desenvolvimento e garantindo 100% dos prazos de entrega em sprints ágeis.</li>
+                    <li>Projetou e implementou <strong>pipelines de ETL</strong> com <strong>PySpark e Apache Spark</strong>, automatizando a ingestão e o refinamento de dados em <strong>arquitetura Medallion (Raw/Bronze → Refined/Silver → Gold)</strong>, reduzindo o processamento manual em <strong>~15 horas semanais</strong>.</li>
+                    <li>Desenvolveu <strong>notebooks Python/PySpark</strong> para transformação, validação e qualidade de dados em larga escala no Data Lake (S3), com consultas SQL avançadas focadas em <strong>desempenho e segurança</strong>.</li>
+                    <li>Estruturou <strong>Data Lake Cloud</strong> com camadas de armazenamento, transporte e refinamento de Big Data, aplicando <strong>modelagem dimensional (Star Schema)</strong> para consumo analítico.</li>
+                    <li>Criou <strong>dashboards e painéis de BI</strong> para visualização estratégica de dados consolidados, fornecendo dados para públicos e objetivos heterogêneos (áreas de negócio, gestão e técnica).</li>
+                    <li>Aplicou práticas de <strong>FinOps e governança de dados</strong> (lifecycle policies, otimização de instâncias, catalogação), gerando economia estimada de <strong>20% nos custos</strong> de infraestrutura.</li>
+                    <li>Implementou <strong>CI/CD</strong> (GitHub Actions) para pipelines de Analytics e automações serverless (Lambda), definindo rotinas e jobs com controle de dependências e relacionamentos de dados.</li>
+                    <li>Utilizou <strong>IA para aceleração de desenvolvimento</strong> de código e atividades de migração, entregando features <strong>3x mais rápido</strong>.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">V3LOZ (UNAMA - Grupo SER)</div>
+                    <div class="job-date">Maio 2025 - Jan 2026</div>
+                </div>
+                <div class="job-position">Engenheiro de Software & Dados</div>
+                <ul>
+                    <li>Atuou em <strong>ambiente crítico de alto volume e alta disponibilidade</strong>, escalando a infraestrutura para suportar <strong>330.000+ usuários ativos</strong> em todas as unidades do Grupo SER.</li>
+                    <li>Otimizou <strong>consultas SQL avançadas</strong> e modelagem de dados relacional, reduzindo a latência média das requisições em <strong>50%</strong>, com foco em desempenho e integridade dos dados.</li>
+                    <li>Realizou <strong>análise de impacto e solução de problemas</strong> em migrações de arquitetura (Monolítica → Microsserviços), reapontando artefatos de consumo de dados e garantindo continuidade dos serviços.</li>
+                    <li>Implementou <strong>CI/CD e práticas de DevOps</strong>, padronizando o processo de deploy, reduzindo falhas em produção em <strong>70%</strong> e custos operacionais em <strong>40%</strong>.</li>
+                    <li>Conduziu processos de <strong>homologação e validação</strong> junto às áreas de negócio produtoras e consumidoras de dados, planejando e executando atividades em conjunto com times técnicos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Projetos & Portfólio Técnico</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Pipeline de Dados & Automação (Compass UOL)</div>
+                    <div class="job-date">2025</div>
+                </div>
+                <ul>
+                    <li>Projetou solução de <strong>orquestração de dados</strong> com AWS Lambda e crawlers automatizados, configurando metadados, catálogos e objetos para governança do Data Lake.</li>
+                    <li>Pesquisou, propôs e desenvolveu <strong>estratégias técnicas para redução de esforço</strong> em processos de migração e homologação de dados entre camadas.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">App Leão (Fiscalização & Transparência)</div>
+                    <div class="job-date">2025</div>
+                </div>
+                <ul>
+                    <li>Arquitetou Backend em <strong>Node.js com Fastify</strong>, implementando arquitetura orientada a eventos com <strong>BullMQ (Filas) e Redis (Cache)</strong> para processamento assíncrono escalável.</li>
+                    <li>Configurou esteira completa de <strong>CI/CD e deploy em Cloud</strong>, aumentando a velocidade de deploy em <strong>80%</strong>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Formação Acadêmica, Certificações & Idiomas</div>
+            <div class="education-item">
+                <div class="education-header">
+                    <span class="education-school">Amazon Web Services (AWS)</span>
+                    <span class="education-date">Nov 2025</span>
+                </div>
+                <div class="education-degree"><strong>AWS Certified Cloud Practitioner</strong></div>
+            </div>
+
+            <div class="education-item" style="margin-top: 4px;">
+                <strong>Idiomas:</strong> Inglês (Fluente - Proficiência Profissional), Português (Nativo)
+            </div>
+
+            <div class="education-item">
+                <div class="education-header">
+                    <span class="education-school">Universidade da Amazônia (UNAMA)</span>
+                    <span class="education-date">Conclusão: Dez 2026</span>
+                </div>
+                <div class="education-degree">Tecnólogo em Análise e Desenvolvimento de Sistemas</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
