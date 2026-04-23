@@ -18,15 +18,32 @@ Em vez de editar arquivos estáticos, este projeto utiliza uma abordagem baseada
 - `/archives`: Histórico de currículos gerados para candidaturas específicas.
 - `/automation`: Scripts para conversão de HTML para PDF.
 
-## 🛠️ Como Usar
+## ⚡ Quick Start (AI Workflow)
 
-1. **Analise a Vaga:** Coloque a descrição da vaga em `/research/current/vaga.md`.
-2. **Adapte o Template:** Ajuste o arquivo em `/src/resume_br.html` com as palavras-chave identificadas.
-3. **Gere o PDF:**
-   ```powershell
-   # Exemplo via CLI (PowerShell + Edge)
-   ./automation/generate_pdf.ps1 -Input "./src/resume_br.html" -Output "./archives/empresa_vaga/resume.pdf"
-   ```
+Este repositório foi desenhado para ser operado por agentes de IA. Para gerar um novo currículo otimizado, siga este protocolo:
+
+1. **Input:** Atualize o arquivo `./research/current/vaga.md` com a descrição da vaga desejada.
+2. **Execution:** Forneça a seguinte instrução para a IA CLI:
+   > "Leia o README, analise a vaga em `./research/current/vaga.md` e o template em `./src/resume_br.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, ajuste os pontos técnicos para dar match com os requisitos e gere o PDF usando o script em `./automation/generate_pdf.ps1`."
+
+---
+
+## 🤖 AI-Assisted Content Optimization
+
+O coração deste projeto é a integração entre automação de documentos e **Inteligência Artificial**. O processo de otimização utiliza LLMs (via CLI ou API) para:
+
+1. **Extração de Entidades:** Identificação automática de Hard Skills e requisitos críticos em descrições de vagas brutas.
+2. **Refatoração Semântica:** Reescrita de experiências profissionais para alinhar a terminologia do currículo com a cultura técnica da empresa alvo.
+3. **Keyword Gap Analysis:** Comparação entre o template base e a vaga para garantir que o parser do ATS atinja o score máximo de relevância.
+
+---
+
+## 🛠️ Toolchain
+
+- **Engine:** Microsoft Edge / Puppeteer (PDF Rendering)
+- **Scripting:** PowerShell / Node.js
+- **Intelligence:** AI CLI (Gemini/GPT-4) para processamento de linguagem natural.
+- **Markup:** HTML5 semântico e CSS3.
 
 ## 🧠 Filosofia de Design (ATS-Friendly)
 
