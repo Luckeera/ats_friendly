@@ -38,7 +38,7 @@ Este repositório foi desenhado para ser operado por agentes de IA. Para gerar u
 ### Fluxo de Otimização para Vaga:
 1. **Input:** Atualize o arquivo `./research/current/vaga.md` com a descrição da vaga desejada.
 2. **Execution:** Forneça a seguinte instrução para a IA CLI:
-   > "Leia o README, analise a vaga em `./research/current/vaga.md` e o template em `./src/resume_br.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, ajuste os pontos técnicos para dar match com os requisitos e gere o PDF usando o script em `./automation/generate_pdf.ps1`."
+   > "Analise a vaga em `./research/current/vaga.md` e o template mestre em `./src/master/v2/master_resume.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, limitando o conteúdo a **exatamente uma página**. Selecione apenas as experiências e projetos mais relevantes para o match técnico e gere o PDF usando o script em `./automation/generate_pdf.ps1`."
 
 ---
 
@@ -62,6 +62,8 @@ O coração deste projeto é a integração entre automação de documentos e **
 ## 🧠 Filosofia de Design (ATS-Friendly)
 
 Este projeto segue as melhores práticas de otimização para sistemas automáticos:
+- **Limite de 1 Página:** Currículos gerados devem ser limitados a **uma única página**. A IA deve selecionar criteriosamente apenas as experiências, projetos e skills mais relevantes para a vaga alvo, priorizando impacto sobre a completude.
+- **Seleção de Experiência:** Não tente incluir todo o histórico; mantenha apenas o que dá "match" com os requisitos técnicos da vaga em `./research/current/vaga.md`.
 - Estrutura de coluna única para evitar erros de parsing.
 - Uso de fontes padrão do sistema.
 - Seções nomeadas com termos padrão da indústria.
