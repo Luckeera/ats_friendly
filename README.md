@@ -70,4 +70,14 @@ Este projeto segue as melhores práticas de otimização para sistemas automáti
 - Ausência de elementos gráficos complexos (tabelas/imagens) que bloqueiam a extração de dados.
 
 ---
+
+## 🔒 Privacidade e Limpeza de Dados
+
+Este repositório é utilizado para versionamento pessoal e os currículos gerados são mantidos no histórico para facilitar o acesso remoto. 
+
+**Se você for utilizar este framework como base:**
+- Certifique-se de apagar os currículos e dados pessoais existentes nas pastas `/archives/`, `/src/master/` e `/src/bero/`.
+- Substitua o conteúdo do `src/master/v3/master_resume.html` pelos seus próprios dados antes de iniciar o fluxo de automação.
+
+---
 *Este repositório é parte de um esforço contínuo para aplicar princípios de engenharia no desenvolvimento de carreira.*
