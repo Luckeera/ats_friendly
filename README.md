@@ -1,111 +1,109 @@
 # Resume-as-Code & ATS Optimization Framework
 
-Este repositório contém um sistema de gerenciamento de currículos focado em **automação**, **versionamento** e **otimização para ATS** (Applicant Tracking Systems). 
+Este repositório contém um sistema de gerenciamento de currículos focado em **automação**, **versionamento**, **inteligência de mercado** e **otimização para ATS** (Applicant Tracking Systems). 
 
-Em vez de editar arquivos estáticos, este projeto utiliza uma abordagem baseada em templates HTML/CSS para gerar currículos profissionais em PDF, garantindo que cada candidatura seja personalizada e tecnicamente otimizada.
+Em vez de editar arquivos estáticos, este projeto utiliza uma abordagem baseada em código e templates HTML/CSS para gerar currículos profissionais em PDF, garantindo que cada candidatura seja personalizada, estritamente restrita a **uma página A4** e tecnicamente otimizada para os robôs de triagem.
+
+---
 
 ## 🚀 Funcionalidades
 
 - **Templates Semânticos:** Currículos estruturados em HTML5 puro, otimizados para leitura por parsers de IA e sistemas de recrutamento.
-- **Automação de PDF:** Geração de PDFs via Headless Browser (Edge/Puppeteer), garantindo fidelidade visual e seleção de texto perfeita.
+- **Automação de PDF (1 Página A4):** Geração de PDFs via Headless Browser (Edge/Puppeteer), com corte milimétrico e auditoria automatizada de páginas.
+- **LinkedIn Hunter Seguro (Modo Guest / On-Demand):** Varredura pública sem credenciais ou login, eliminando qualquer risco de banimento de conta.
+- **Motor de Match & Gap Analysis:** Cálculo semântico de aderência técnica (0-100%) entre a descrição da vaga e as competências do currículo mestre.
+- **Dashboard Web Interativo:** Painel visual em `http://localhost:3000` com polling em tempo real, badges de score, modal de preview e botões de enfileiramento para o Agente CLI.
+- **Sincronização em Planilha e JSON:** Exportação contínua para [vagas.csv](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/vagas.csv) (com BOM UTF-8 para Excel) e persistência em [data/vagas.json](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/data/vagas.json).
+- **Camada Desacoplada de IA (AI Provider Layer):** Arquitetura plug-and-play que suporta motor local heurístico (offline), Google Gemini API e OpenAI/Groq/Ollama, preparando a solução para operar tanto via CLI quanto como SaaS.
 - **Extração de Projetos (Feature B):** Processamento automático de pastas de projetos em `@new_project/project/` e `@new_project/OBSERVATIONS.md` para gerar resumos técnicos em `@new_exp/new/`.
-- **Sincronização Mestre (Feature A):** Atualização inteligente do `src/master_resume.html` baseada nos arquivos de `@new_exp/new/`, sincronizando múltiplas seções (Resumo, Skills, Experiência e Projetos), ao gerar os arquivos de `@new_exp/new/` devem ser movidos para `@new_exp/old/`.
-- **Versionamento de Candidaturas:** Histórico completo de versões customizadas para diferentes vagas e perfis (Engenharia de Dados, Backend Python, etc).
-- **Pesquisa de Mercado:** Repositório centralizado de descrições de vagas para análise de tendências de keywords.
+- **Sincronização Mestre (Feature A):** Atualização do `src/master/v3/master_resume.html` baseada em novos projetos e experiências consolidadas.
+
+---
 
 ## 📁 Estrutura do Projeto
 
-- `/src`: Templates base e arquivos fonte HTML (incluindo o currículo mestre `master_resume.html`).
-- `/new_project`: Sandbox para análise de novos projetos (contém `/project` e `OBSERVATIONS.md`).
-- `/new_exp/new`: Destino dos artefatos gerados pela Feature B e fonte para a Feature A.
-- `/research`: Descrições de vagas e análise de requisitos.
-- `/archives`: Histórico de currículos gerados para candidaturas específicas.
-- `/automation`: Scripts para conversão de HTML para PDF.
+- `/src`: Templates base e currículo mestre (`master_resume.html`).
+- `/data`: Estado persistente em JSON (`vagas.json`).
+- `/vagas.csv`: Planilha de vagas compatível com Microsoft Excel e Google Sheets.
+- `/archives`: Histórico de currículos gerados sob medida para vagas específicas (HTML e PDF de 1 pág).
+- `/automation`: Módulos de automação:
+  - `linkedin_hunter.js`: Crawler em modo guest do LinkedIn.
+  - `match_engine.js`: Extração de perfil, keywords e cálculo de score.
+  - `spreadsheet_manager.js`: Persistência e deduplicação de CSV.
+  - `job_store.js`: Armazenamento centralizado de vagas e controle de fila.
+  - `ai_provider.js`: Adaptadores para múltiplos backends de IA.
+  - `tailor_service.js`: Orquestrador de adaptação e injeção de CSS A4.
+  - `generate_pdf.js`: Compilador Puppeteer com validação de página via `pdf-lib`.
+  - `audit_pages.js`: Auditor de páginas para todo o repositório.
+  - `server.js` & `/public`: Servidor HTTP nativo e Dashboard Web.
+- `/new_project`: Sandbox para análise de novos projetos (`project/` e `OBSERVATIONS.md`).
+- `/new_exp`: Resumos gerados de novas experiências (`new/` e `old/`).
+- `/research`: Descrições de vagas e histórico de requisitos.
+- `/test`: Suíte de testes unitários automatizados cobrindo todos os módulos.
 
-## ⚡ Quick Start (AI Workflow)
+---
 
-Este repositório foi desenhado para ser operado por agentes de IA. Para gerar um novo currículo otimizado, siga este protocolo:
+## ⚡ Quick Start & Workflows
 
-### Para Adicionar um Novo Projeto (Feature B):
-1. Adicione os arquivos do projeto em `./new_project/project/`.
-2. Descreva os impactos e observações em `./new_project/OBSERVATIONS.md`.
-3. Instrua a IA: *"Analise o projeto em `./new_project/` e gere o resumo em `./new_exp/new/`."*
+### 1. Iniciar o Painel Web Interativo
+```bash
+npm run server
+```
+Acesse `http://localhost:3000` para visualizar todas as vagas coletadas, status de geração, pontuação de match e previews.
 
-### Para Sincronizar com o Currículo Mestre (Feature A):
-1. Certifique-se de que o arquivo `.md` está em `./new_exp/new/`.
-2. Instrua a IA: *"Leia os arquivos em `./new_exp/new/` e atualize o `src/master/v3/master_resume.html` corretamente nas seções de Resumo, Skills, Experiência e Projetos."*
+### 2. Varredura On-Demand de Vagas (LinkedIn Hunter)
+```bash
+npm run hunt
+```
+- Coleta oportunidades recentes no LinkedIn sem autenticação.
+- Calcula o score de compatibilidade contra `src/master/v3/master_resume.html`.
+- Vagas com **Match >= 90%** geram automaticamente o currículo adaptado de 1 página em `/archives/`.
+- Vagas com **Match < 90%** ficam registradas como pendentes na planilha e no dashboard.
 
-### Fluxo de Otimização para Vaga:
-1. **Input:** Atualize o arquivo `./research/current/vaga.md` com a descrição da vaga desejada.
-2. **Execution:** Forneça a seguinte instrução para a IA CLI:
-   > "Analise a vaga em `./research/current/vaga.md` e o template mestre em `./src/master/v3/master_resume.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, limitando o conteúdo a **exatamente uma página**. Selecione apenas as experiências e projetos mais relevantes para o match técnico e gere o PDF usando `npm run generate -- --input ./archives/[NOME_DA_EMPRESA]/[ARQUIVO].html`."
-3. **Auditoria:** Verifique se todas as candidaturas respeitam a regra de 1 página rodando:
+### 3. Fila de Geração para Vagas (<90%)
+1. No painel web (`http://localhost:3000`), clique no botão **`+ Marcar p/ o Agente`** na vaga desejada.
+2. No chat do Agente CLI, solicite: *"Processe as vagas da fila"*, ou execute diretamente:
    ```bash
-   npm run audit
+   npm run process:queue
    ```
+3. O status mudará dinamicamente para **"Currículo Gerado"** e você poderá ver o preview no modal do painel.
 
-### Fluxo Completo: Busca, Painel Web e Fila de Geração:
-1. **Inicie o Painel Web Interativo:**
-   ```bash
-   npm run server
-   ```
-   Acesse `http://localhost:3000` no seu navegador para ver o dashboard em tempo real com auto-refresh.
+### 4. Auditoria de Páginas
+Para garantir que nenhum currículo arquivado ultrapasse o limite de uma página A4:
+```bash
+npm run audit
+```
 
-2. **Varredura On-Demand de Vagas (LinkedIn Hunter):**
-   ```bash
-   npm run hunt
-   ```
-   - O crawler busca vagas recentes no LinkedIn (sem login, modo guest seguro).
-   - Calcula o match com `src/master/v3/master_resume.html` e salva em `vagas.json` e `vagas.csv`.
-   - Vagas com **Match >= 90%** disparam a geração do currículo de 1 página automaticamente!
-
-3. **Fila Manual para Vagas (<90%):**
-   - No painel web (`http://localhost:3000`), clique no botão **`+ Adicionar à Fila`** em qualquer vaga desejada.
-   - Para o agente processar a fila, basta rodar:
-     ```bash
-     npm run process:queue
-     ```
-     *(Ou simplesmente pedir: "Agente, gere os currículos das vagas na fila")*
-   - O painel exibe quando o currículo está sendo criado e quando fica pronto, permitindo **Ver Preview** ou **Baixar PDF** diretamente na interface!
+### 5. Execução dos Testes Automatizados (TDD)
+```bash
+npm test
+```
 
 ---
 
-## 🤖 AI-Assisted Content Optimization
+## 🤖 Camada de Adaptação de IA (Pluggable Architecture)
 
-O coração deste projeto é a integração entre automação de documentos e **Inteligência Artificial**. O processo de otimização utiliza LLMs (via CLI ou API) para:
+O sistema conta com um padrão de adapter em [automation/ai_provider.js](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/automation/ai_provider.js):
 
-1. **Extração de Entidades:** Identificação automática de Hard Skills e requisitos críticos em descrições de vagas brutas ou projetos.
-2. **Refatoração Semântica:** Reescrita de experiências profissionais para alinhar a terminologia do currículo com a cultura técnica da empresa alvo.
-3. **Keyword Gap Analysis:** Comparação entre o template base e a vaga para garantir que o parser do ATS atinja o score máximo de relevância.
-
----
-
-## 🛠️ Toolchain
-
-- **Engine:** Microsoft Edge / Puppeteer (PDF Rendering)
-- **Scripting:** PowerShell / Node.js
-- **Intelligence:** AI CLI (Gemini/GPT-4) para processamento de linguagem natural.
-- **Markup:** HTML5 semântico e CSS3.
-
-## 🧠 Filosofia de Design (ATS-Friendly)
-
-Este projeto segue as melhores práticas de otimização para sistemas automáticos:
-- **Limite de 1 Página:** Currículos gerados devem ser limitados a **uma única página**. A IA deve selecionar criteriosamente apenas as experiências, projetos e skills mais relevantes para a vaga alvo, priorizando impacto sobre a completude.
-- **Seleção de Experiência:** Não tente incluir todo o histórico; mantenha apenas o que dá "match" com os requisitos técnicos da vaga em `./research/current/vaga.md`.
-- Estrutura de coluna única para evitar erros de parsing.
-- Uso de fontes padrão do sistema.
-- Seções nomeadas com termos padrão da indústria.
-- Ausência de elementos gráficos complexos (tabelas/imagens) que bloqueiam a extração de dados.
+- **LocalHeuristicProvider:** Motor padrão, 100% offline, com zero custo de tokens e resposta instantânea via regex semântico.
+- **GeminiProvider:** Integração direta com a API do Google Gemini (`gemini-1.5-flash`).
+- **OpenAiCompatibleProvider:** Integração com APIs compatíveis com o padrão OpenAI (Groq, DeepSeek, Ollama, OpenAI).
+- **TailorService:** Orquestra a injeção dos requisitos da vaga e a calibração do CSS A4, mantendo a regra de página única inviolável.
 
 ---
 
-## 🔒 Privacidade e Limpeza de Dados
+## 🔒 Privacidade, Segurança e Integração de E-mails (Diretriz Estrita)
 
-Este repositório é utilizado para versionamento pessoal e os currículos gerados são mantidos no histórico para facilitar o acesso remoto. 
+### 📧 Leitura Futura de E-mails (Status de Candidaturas)
+Para a futura funcionalidade de monitoramento de respostas de processos seletivos via integração de e-mail:
+- **Princípio da Whitelist Fechada:** O leitor de e-mails DEVE consultar e processar **exclusivamente** mensagens de remetentes, domínios ou assuntos diretamente associados a empresas registradas em [data/vagas.json](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/data/vagas.json).
+- **Escopo Restrito:** Se o candidato aplicou apenas para vagas da Samsung, é terminantemente proibido ler, listar ou processar e-mails de quaisquer outras entidades (ex: Google, bancos, serviços pessoais ou newsletters).
+- **Ações Ativas:** Nenhuma submissão ou envio de e-mails em nome do usuário será realizado de forma autônoma sem confirmação explícita.
 
-**Se você for utilizar este framework como base:**
-- Certifique-se de apagar os currículos e dados pessoais existentes nas pastas `/archives/`, `/src/master/` e `/src/bero/`.
-- Substitua o conteúdo do `src/master/v3/master_resume.html` pelos seus próprios dados antes de iniciar o fluxo de automação.
+### 🛡️ Proteção de Dados e Limpeza
+- Este repositório é utilizado para versionamento pessoal. Caso utilize este framework como base para seus próprios currículos:
+  - Limpe dados das pastas `/archives/` e `src/master/`.
+  - Atualize `src/master/v3/master_resume.html` com suas informações.
 
 ---
-*Este repositório é parte de um esforço contínuo para aplicar princípios de engenharia no desenvolvimento de carreira.*
+*Framework desenvolvido sob práticas de engenharia de software, TDD e automação orientada a agentes de IA.*

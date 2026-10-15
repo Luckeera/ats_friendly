@@ -23,11 +23,13 @@ function buildSearchUrl(keyword, location = 'Brasil', timeWindow = 'week') {
 }
 
 function parseCardHtml(cardHtml) {
-  const titleMatch = cardHtml.match(/class="base-search-card__title">([\s\S]*?)<\/h3>/i);
-  const companyMatch = cardHtml.match(/class="base-search-card__subtitle">([\s\S]*?)<\/h4>/i);
-  const locationMatch = cardHtml.match(/class="job-search-card__location">([\s\S]*?)<\/span>/i);
-  const linkMatch = cardHtml.match(/class="base-card__full-link"[^>]*href="([^"]+)"/i);
-  const timeMatch = cardHtml.match(/class="job-search-card__listdate[^"]*">([\s\S]*?)<\/time>/i);
+  const titleMatch = cardHtml.match(/class="[^"]*base-search-card__title[^"]*">([\s\S]*?)<\/h3>/i);
+  const companyMatch = cardHtml.match(/class="[^"]*base-search-card__subtitle[^"]*">([\s\S]*?)<\/h4>/i);
+  const locationMatch = cardHtml.match(/class="[^"]*job-search-card__location[^"]*">([\s\S]*?)<\/span>/i);
+  const linkMatch = cardHtml.match(/<a\b[^>]*\bhref="([^"]+)"[^>]*class="[^"]*base-card__full-link[^"]*"/i) ||
+                    cardHtml.match(/<a\b[^>]*class="[^"]*base-card__full-link[^"]*"[^>]*\bhref="([^"]+)"/i) ||
+                    cardHtml.match(/href="([^"]*linkedin\.com\/jobs\/view\/[^"]+)"/i);
+  const timeMatch = cardHtml.match(/class="[^"]*job-search-card__listdate[^"]*">([\s\S]*?)<\/time>/i);
 
   const cleanText = (str) => str ? str.replace(/<[^>]+>/g, '').trim() : '';
 
@@ -63,12 +65,26 @@ async function scrapeJobSearch(page, searchUrl, maxJobs = 5) {
   await page.goto(searchUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.base-card', { timeout: 10000 }).catch(() => null);
 
-  const cardsHtml = await page.evaluate((max) => {
+  const jobs = await page.evaluate((max) => {
     const cards = document.querySelectorAll('.base-card, .job-search-card');
-    return Array.from(cards).slice(0, max).map(c => c.outerHTML);
+    return Array.from(cards).slice(0, max).map(c => {
+      const titleEl = c.querySelector('.base-search-card__title');
+      const companyEl = c.querySelector('.base-search-card__subtitle');
+      const locationEl = c.querySelector('.job-search-card__location');
+      const linkEl = c.querySelector('a.base-card__full-link') || c.querySelector('a[href*="/jobs/view/"]');
+      const timeEl = c.querySelector('time');
+
+      return {
+        title: titleEl ? titleEl.innerText.trim() : '',
+        company: companyEl ? companyEl.innerText.trim() : '',
+        location: locationEl ? locationEl.innerText.trim() : '',
+        link: linkEl ? linkEl.href.split('?')[0] : '',
+        posted: timeEl ? timeEl.innerText.trim() : ''
+      };
+    }).filter(j => j.title && j.link);
   }, maxJobs);
 
-  return cardsHtml.map(html => parseCardHtml(html)).filter(j => j.title && j.link);
+  return jobs;
 }
 
 async function scrapeJobPage(page, jobUrl) {
