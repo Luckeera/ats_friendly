@@ -1,443 +1,742 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume-as-Code | Painel de Vagas & Automação ATS</title>
+  <title>Resume-as-Code | ATS Hunter & Dashboard</title>
   <style>
+    /* -------------------------------------------------------------
+       Design System: shadcn/ui (Zinc) + MagicUI Minimalist Dashboard
+       Theme variables for Dark (default) & Light modes
+       ------------------------------------------------------------- */
     :root {
-      --bg: #090d16;
-      --card-bg: #111827;
-      --card-border: #1f2937;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --success: #10b981;
-      --warning: #f59e0b;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #09090b;
+      --bg-subtle: #121215;
+      --card: #121215;
+      --card-hover: #17171c;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(255, 255, 255, 0.16);
+      --fg: #fafafa;
+      --fg-muted: #a1a1aa;
+      --fg-subtle: #71717a;
+      
+      --primary: #fafafa;
+      --primary-fg: #09090b;
+      --primary-hover: #f4f4f5;
+      
+      --secondary: #18181b;
+      --secondary-fg: #f4f4f5;
+      --secondary-hover: #27272a;
+      --secondary-border: rgba(255, 255, 255, 0.08);
+      
+      --muted-bg: #18181b;
+      --muted-border: #27272a;
+      
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.1);
+      --emerald-border: rgba(16, 185, 129, 0.25);
+      
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.1);
+      --amber-border: rgba(245, 158, 11, 0.25);
+      
+      --cyan: #06b6d4;
+      --cyan-bg: rgba(6, 182, 212, 0.1);
+      --cyan-border: rgba(6, 182, 212, 0.25);
+
       --danger: #ef4444;
-      --easy-apply: #06b6d4;
+      --danger-bg: rgba(239, 68, 68, 0.1);
+      --danger-border: rgba(239, 68, 68, 0.25);
+
+      --glow-color: rgba(120, 119, 198, 0.15);
+      --dot-color: rgba(255, 255, 255, 0.035);
+      --modal-overlay: rgba(0, 0, 0, 0.75);
+      --modal-bg: #09090b;
+      --badge-bg: rgba(255, 255, 255, 0.04);
+      --badge-border: rgba(255, 255, 255, 0.08);
+    }
+
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --bg-subtle: #f4f4f5;
+      --card: #ffffff;
+      --card-hover: #ffffff;
+      --card-border: #e4e4e7;
+      --card-border-hover: #d4d4d8;
+      --fg: #09090b;
+      --fg-muted: #71717a;
+      --fg-subtle: #a1a1aa;
+      
+      --primary: #18181b;
+      --primary-fg: #fafafa;
+      --primary-hover: #27272a;
+      
+      --secondary: #f4f4f5;
+      --secondary-fg: #09090b;
+      --secondary-hover: #e4e4e7;
+      --secondary-border: #e4e4e7;
+      
+      --muted-bg: #f4f4f5;
+      --muted-border: #e4e4e7;
+      
+      --emerald: #059669;
+      --emerald-bg: rgba(5, 150, 105, 0.08);
+      --emerald-border: rgba(5, 150, 105, 0.2);
+      
+      --amber: #d97706;
+      --amber-bg: rgba(217, 119, 6, 0.08);
+      --amber-border: rgba(217, 119, 6, 0.2);
+      
+      --cyan: #0891b2;
+      --cyan-bg: rgba(8, 145, 178, 0.08);
+      --cyan-border: rgba(8, 145, 178, 0.2);
+
+      --danger: #dc2626;
+      --danger-bg: rgba(220, 38, 38, 0.08);
+      --danger-border: rgba(220, 38, 38, 0.2);
+
+      --glow-color: rgba(99, 102, 241, 0.08);
+      --dot-color: rgba(0, 0, 0, 0.04);
+      --modal-overlay: rgba(0, 0, 0, 0.45);
+      --modal-bg: #ffffff;
+      --badge-bg: rgba(0, 0, 0, 0.03);
+      --badge-border: #e4e4e7;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
       background-color: var(--bg);
-      color: var(--text);
-      padding: 24px;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow-color), transparent 70%),
+        radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px;
+      background-position: top center, 0 0;
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Geist", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      letter-spacing: -0.015em;
       line-height: 1.5;
+      padding: 32px 20px 60px;
+      transition: background-color var(--transition-normal), color var(--transition-normal);
     }
 
     .container {
-      max-width: 1300px;
+      max-width: 1220px;
       margin: 0 auto;
     }
 
-    /* Header */
+    /* -------------------------------------------------------------
+       Header & Theme Switcher
+       ------------------------------------------------------------- */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--card-border);
-      padding-bottom: 16px;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .brand h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: var(--secondary);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg);
+    }
+
+    .brand-text h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text p {
+      color: var(--fg-muted);
+      font-size: 0.84rem;
+      margin-top: 1px;
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .brand p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
     }
 
     .live-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--success);
+      background: var(--emerald-bg);
+      color: var(--emerald);
+      border: 1px solid var(--emerald-border);
       padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 500;
     }
 
-    .pulse {
-      width: 8px;
-      height: 8px;
-      background-color: var(--success);
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--emerald);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--success);
-      animation: pulseAnim 2s infinite;
+      box-shadow: 0 0 6px var(--emerald);
+      animation: pulseAnim 2s infinite ease-in-out;
     }
 
     @keyframes pulseAnim {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.2); }
-      100% { opacity: 1; transform: scale(1); }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.3); }
     }
 
-    /* Stats Grid */
+    .theme-toggle-btn {
+      background: var(--secondary);
+      border: 1px solid var(--card-border);
+      color: var(--fg);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--secondary-hover);
+      border-color: var(--card-border-hover);
+    }
+
+    /* -------------------------------------------------------------
+       Bento Stats Grid (MagicUI style)
+       ------------------------------------------------------------- */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
     .stat-card {
-      background: var(--card-bg);
+      background: var(--card);
       border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 8px;
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .stat-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-1px);
+    }
+
+    .stat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
     }
 
     .stat-card .label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .icon {
+      color: var(--fg-subtle);
     }
 
     .stat-card .value {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 1.85rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
     }
 
-    /* Action Banner */
-    .action-banner {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.1));
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      padding: 14px 20px;
-      border-radius: 8px;
+    /* -------------------------------------------------------------
+       Instruction Callout (Minimalist Banner)
+       ------------------------------------------------------------- */
+    .callout-banner {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
       margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .action-banner .instruction {
-      font-size: 0.95rem;
+    .callout-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
     }
 
-    .action-banner code {
-      background: rgba(0, 0, 0, 0.4);
+    .callout-badge {
+      background: var(--secondary);
+      border: 1px solid var(--card-border);
+      color: var(--fg);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .code-prompt {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
       padding: 3px 8px;
-      border-radius: 4px;
-      color: #93c5fd;
-      font-family: monospace;
+      border-radius: var(--radius-sm);
+      color: var(--fg);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
     }
 
-    /* Tabs & Controls */
-    .controls {
+    .code-prompt:hover {
+      border-color: var(--card-border-hover);
+      background: var(--secondary-hover);
+    }
+
+    /* -------------------------------------------------------------
+       Controls: Segmented Control & Search Bar
+       ------------------------------------------------------------- */
+    .controls-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+      gap: 14px;
       flex-wrap: wrap;
-      gap: 12px;
     }
 
-    .tabs {
-      display: flex;
-      gap: 8px;
-      background: var(--card-bg);
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
+    .tabs-segmented {
+      display: inline-flex;
+      background: var(--secondary);
+      border: 1px solid var(--secondary-border);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      gap: 2px;
     }
 
     .tab-btn {
       background: transparent;
       border: none;
-      color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      color: var(--fg-muted);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      color: var(--fg);
     }
 
     .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
+      background: var(--card);
+      color: var(--fg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
     }
 
-    /* Search */
-    .search-box input {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.9rem;
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--fg-subtle);
+      pointer-events: none;
+    }
+
+    .search-input {
+      background: var(--secondary);
+      border: 1px solid var(--secondary-border);
+      color: var(--fg);
+      padding: 7px 12px 7px 34px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
       width: 280px;
       outline: none;
+      transition: all var(--transition-fast);
     }
 
-    .search-box input:focus {
+    .search-input:focus {
       border-color: var(--primary);
+      background: var(--card);
     }
 
-    /* Jobs List / Cards */
+    /* -------------------------------------------------------------
+       Job Cards Bento Container
+       ------------------------------------------------------------- */
     .jobs-container {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .job-card {
-      background: var(--card-bg);
+      background: var(--card);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 18px 20px;
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
       display: grid;
-      grid-template-columns: 80px 1fr auto;
+      grid-template-columns: 74px 1fr auto;
       gap: 20px;
       align-items: center;
-      transition: border-color 0.2s, transform 0.1s;
+      transition: all var(--transition-fast);
+      position: relative;
     }
 
     .job-card:hover {
-      border-color: #374151;
+      border-color: var(--card-border-hover);
+      background: var(--card-hover);
+      transform: translateY(-1px);
     }
 
-    /* Score Badge */
-    .score-circle {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
+    /* Score Indicator (Radial shadcn badge) */
+    .score-indicator {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-md);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      border: 1px solid;
+      background: var(--bg-subtle);
       text-align: center;
-      border: 2px solid;
     }
 
-    .score-high {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: var(--success);
-      color: var(--success);
+    .score-indicator.score-high {
+      border-color: var(--emerald-border);
+      background: var(--emerald-bg);
+      color: var(--emerald);
     }
 
-    .score-mid {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: var(--warning);
-      color: var(--warning);
+    .score-indicator.score-mid {
+      border-color: var(--amber-border);
+      background: var(--amber-bg);
+      color: var(--amber);
     }
 
-    .score-low {
-      background: rgba(156, 163, 175, 0.1);
-      border-color: #4b5563;
-      color: #9ca3af;
+    .score-indicator.score-low {
+      border-color: var(--card-border);
+      background: var(--badge-bg);
+      color: var(--fg-subtle);
     }
 
-    .score-circle .number {
+    .score-indicator .score-val {
       font-size: 1.25rem;
+      font-weight: 700;
       line-height: 1;
+      letter-spacing: -0.03em;
     }
 
-    .score-circle .label {
-      font-size: 0.65rem;
+    .score-indicator .score-lbl {
+      font-size: 0.62rem;
       text-transform: uppercase;
-      margin-top: 2px;
+      font-weight: 600;
+      margin-top: 3px;
+      letter-spacing: 0.04em;
     }
 
-    /* Job Info */
-    .job-info h3 {
-      font-size: 1.15rem;
+    /* Job Content */
+    .job-content h3 {
+      font-size: 1.05rem;
       font-weight: 600;
+      color: var(--fg);
       margin-bottom: 4px;
+      letter-spacing: -0.02em;
     }
 
     .job-meta {
       display: flex;
-      gap: 12px;
-      color: var(--text-muted);
-      font-size: 0.88rem;
+      align-items: center;
+      gap: 10px;
+      color: var(--fg-muted);
+      font-size: 0.82rem;
       margin-bottom: 8px;
       flex-wrap: wrap;
     }
 
-    .badge {
+    .meta-item {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      gap: 5px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 500;
+      border: 1px solid;
     }
 
     .badge-easy {
-      background: rgba(6, 182, 212, 0.15);
-      color: var(--easy-apply);
-      border: 1px solid rgba(6, 182, 212, 0.3);
+      background: var(--cyan-bg);
+      color: var(--cyan);
+      border-color: var(--cyan-border);
     }
 
     .badge-external {
-      background: rgba(156, 163, 175, 0.15);
-      color: #cbd5e1;
-      border: 1px solid rgba(156, 163, 175, 0.3);
+      background: var(--badge-bg);
+      color: var(--fg-muted);
+      border-color: var(--badge-border);
     }
 
-    .skills-row {
+    .skills-cluster {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
       margin-top: 6px;
     }
 
     .skill-tag {
-      background: #1f2937;
-      color: #93c5fd;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
+      background: var(--secondary);
+      border: 1px solid var(--secondary-border);
+      color: var(--fg);
+      padding: 1px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
 
-    .skill-gap {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      border: 1px solid rgba(239, 68, 68, 0.2);
+    .skill-tag.matched {
+      color: var(--emerald);
     }
 
-    /* Actions */
+    .skill-tag.missing {
+      color: var(--danger);
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+    }
+
+    /* Job Actions */
     .job-actions {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      min-width: 160px;
       align-items: flex-end;
+      gap: 8px;
+      min-width: 170px;
     }
 
-    .status-text {
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .status-ready { color: var(--success); }
-    .status-queued { color: var(--warning); }
-    .status-pending { color: var(--text-muted); }
-
-    .btn {
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-      transition: all 0.2s;
+    .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .status-badge.ready { color: var(--emerald); }
+    .status-badge.queued { color: var(--amber); }
+    .status-badge.pending { color: var(--fg-subtle); }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Buttons shadcn style */
+    .btn {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
       width: 100%;
+      border: 1px solid transparent;
     }
 
     .btn-primary {
       background: var(--primary);
-      color: #fff;
+      color: var(--primary-fg);
     }
-    .btn-primary:hover { background: var(--primary-hover); }
 
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: var(--text);
+    .btn-primary:hover {
+      background: var(--primary-hover);
     }
-    .btn-outline:hover { background: #1f2937; }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--secondary-fg);
+      border-color: var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--secondary-hover);
+      border-color: var(--card-border-hover);
+    }
 
     .btn-queue-active {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid var(--warning);
-      color: var(--warning);
+      background: var(--amber-bg);
+      color: var(--amber);
+      border-color: var(--amber-border);
     }
 
     .btn-queue-active:hover {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: var(--danger);
+      background: var(--danger-bg);
       color: var(--danger);
+      border-color: var(--danger-border);
     }
 
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      color: var(--text-muted);
-      background: var(--card-bg);
+      padding: 50px 20px;
+      color: var(--fg-muted);
+      background: var(--card);
       border: 1px dashed var(--card-border);
-      border-radius: 8px;
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem;
     }
 
-    /* Modal Preview */
+    /* -------------------------------------------------------------
+       Modal Dialog Preview (Minimalist Backdrop Blur)
+       ------------------------------------------------------------- */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      inset: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      padding: 20px;
+      padding: 24px;
     }
 
     .modal-overlay.open {
       display: flex;
     }
 
-    .modal-container {
-      background: #fff;
-      color: #000;
+    .modal-card {
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
       width: 100%;
-      max-width: 900px;
-      height: 90vh;
-      border-radius: 8px;
+      max-width: 960px;
+      height: 92vh;
+      border-radius: var(--radius-lg);
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
     }
 
     .modal-header {
-      background: #111827;
-      color: #fff;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--card-border);
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .modal-close {
+    .modal-header h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-close-btn {
       background: transparent;
       border: none;
-      color: #fff;
-      font-size: 1.5rem;
+      color: var(--fg-muted);
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition-fast);
+    }
+
+    .modal-close-btn:hover {
+      color: var(--fg);
+      background: var(--secondary);
     }
 
     .modal-body {
       flex: 1;
       background: #e5e7eb;
       overflow: hidden;
+      position: relative;
     }
 
     .modal-body iframe {
@@ -446,78 +745,175 @@
       border: none;
       background: #fff;
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .job-card {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .score-indicator {
+        width: 100%;
+        height: 48px;
+        flex-direction: row;
+        gap: 8px;
+      }
+      .job-actions {
+        align-items: stretch;
+        width: 100%;
+      }
+      .search-input {
+        width: 100%;
+      }
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Header -->
     <header>
       <div class="brand">
-        <h1>🎯 Resume-as-Code & ATS Hunter</h1>
-        <p>Painel Inteligente de Oportunidades & Geração de Currículos 1-Page</p>
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Resume-as-Code & ATS Hunter</h1>
+          <p>Oportunidades filtradas & geração autônoma de currículos 1-page</p>
+        </div>
       </div>
-      <div>
+
+      <div class="header-actions">
         <span class="live-badge">
-          <span class="pulse"></span>
-          Conexão Ativa (Polling 3s)
+          <span class="pulse-dot"></span>
+          Live 3s
         </span>
+
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Alternar Tema (Escuro / Claro)">
+          <!-- Moon Icon (shown in dark mode) -->
+          <svg id="moonIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <!-- Sun Icon (shown in light mode) -->
+          <svg id="sunIcon" style="display: none;" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+        </button>
       </div>
     </header>
 
-    <!-- Stats -->
+    <!-- Bento Stats -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="label">Total de Vagas</div>
+        <div class="stat-card-header">
+          <span class="label">Total de Vagas</span>
+          <span class="icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </span>
+        </div>
         <div class="value" id="stat-total">0</div>
       </div>
+
       <div class="stat-card">
-        <div class="label">Top Match (90%+)</div>
-        <div class="value" style="color: var(--success);" id="stat-top">0</div>
+        <div class="stat-card-header">
+          <span class="label">Top Match (90%+)</span>
+          <span class="icon" style="color: var(--emerald);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          </span>
+        </div>
+        <div class="value" style="color: var(--emerald);" id="stat-top">0</div>
       </div>
+
       <div class="stat-card">
-        <div class="label">Na Fila de Geração</div>
-        <div class="value" style="color: var(--warning);" id="stat-queue">0</div>
+        <div class="stat-card-header">
+          <span class="label">Na Fila de Geração</span>
+          <span class="icon" style="color: var(--amber);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+        </div>
+        <div class="value" style="color: var(--amber);" id="stat-queue">0</div>
       </div>
+
       <div class="stat-card">
-        <div class="label">Currículos Gerados</div>
-        <div class="value" style="color: #60a5fa;" id="stat-generated">0</div>
+        <div class="stat-card-header">
+          <span class="label">Currículos Prontos</span>
+          <span class="icon" style="color: var(--cyan);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+          </span>
+        </div>
+        <div class="value" style="color: var(--cyan);" id="stat-generated">0</div>
       </div>
     </div>
 
-    <!-- Action Banner -->
-    <div class="action-banner">
-      <div class="instruction">
-        💬 <strong>Como gerar os currículos da fila:</strong> Basta dizer no chat: <code>Agente, gere os currículos das vagas que estão na fila</code>
+    <!-- Callout Banner -->
+    <div class="callout-banner">
+      <div class="callout-content">
+        <span class="callout-badge">Agente CLI</span>
+        <span>Para processar os currículos da fila, diga no chat:</span>
+        <code class="code-prompt" onclick="copyPrompt(this)" title="Clique para copiar comando">
+          <span>Agente, gere os currículos das vagas que estão na fila</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </code>
       </div>
       <div>
-        <button class="btn btn-primary" onclick="fetchJobs()">🔄 Atualizar Agora</button>
+        <button class="btn btn-secondary" onclick="fetchJobs()" style="width: auto;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+          Atualizar
+        </button>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-      <div class="tabs">
+    <!-- Controls Row -->
+    <div class="controls-row">
+      <div class="tabs-segmented">
         <button class="tab-btn active" onclick="setTab('all', this)">Todas as Vagas</button>
-        <button class="tab-btn" onclick="setTab('top', this)">🔥 Top Match (90%+)</button>
-        <button class="tab-btn" onclick="setTab('queued', this)">⏳ Na Fila</button>
-        <button class="tab-btn" onclick="setTab('generated', this)">✅ Prontos (Com PDF)</button>
+        <button class="tab-btn" onclick="setTab('top', this)">Top Match (90%+)</button>
+        <button class="tab-btn" onclick="setTab('queued', this)">Na Fila</button>
+        <button class="tab-btn" onclick="setTab('generated', this)">Currículos Prontos</button>
       </div>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Filtrar por cargo, empresa, tech..." oninput="renderJobs()">
+
+      <div class="search-wrapper">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Filtrar por cargo, empresa, tech..." oninput="renderJobs()">
       </div>
     </div>
 
-    <!-- Job Cards -->
+    <!-- Job Cards List -->
     <div class="jobs-container" id="jobsList">
-      <div class="empty-state">Carregando vagas...</div>
+      <div class="empty-state">Carregando oportunidades...</div>
     </div>
   </div>
 
   <!-- Modal Preview -->
-  <div class="modal-overlay" id="previewModal">
-    <div class="modal-container">
+  <div class="modal-overlay" id="previewModal" onclick="handleBackdropClick(event)">
+    <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modalTitle">Preview do Currículo</h3>
-        <button class="modal-close" onclick="closePreview()">&times;</button>
+        <h3 id="modalTitle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          Preview do Currículo
+        </h3>
+        <button class="modal-close-btn" onclick="closePreview()" title="Fechar (ESC)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </div>
       <div class="modal-body">
         <iframe id="previewIframe" src="about:blank"></iframe>
@@ -529,6 +925,37 @@
     let allJobs = [];
     let currentTab = 'all';
 
+    // -------------------------------------------------------------
+    // Theme Manager (Dark / Light)
+    // -------------------------------------------------------------
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      applyTheme(savedTheme);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      const moon = document.getElementById('moonIcon');
+      const sun = document.getElementById('sunIcon');
+      if (theme === 'dark') {
+        moon.style.display = 'block';
+        sun.style.display = 'none';
+      } else {
+        moon.style.display = 'none';
+        sun.style.display = 'block';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    }
+
+    // -------------------------------------------------------------
+    // Data Fetching & Polling
+    // -------------------------------------------------------------
     async function fetchJobs() {
       try {
         const res = await fetch('/api/jobs');
@@ -570,33 +997,25 @@
       }
     }
 
-    async function generateNow(jobId) {
-      const btn = event.target;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '⏳ Gerando...';
-      btn.disabled = true;
-      try {
-        const res = await fetch('/api/jobs/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: jobId })
-        });
-        if (res.ok) {
-          fetchJobs();
-        } else {
-          const err = await res.json();
-          alert('Erro ao gerar: ' + (err.error || 'Falha na geração'));
-        }
-      } catch (err) {
-        alert('Erro de conexão: ' + err.message);
-      } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }
+    function copyPrompt(el) {
+      const text = "Agente, gere os currículos das vagas que estão na fila";
+      navigator.clipboard.writeText(text).then(() => {
+        const original = el.innerHTML;
+        el.innerHTML = '<span>✓ Copiado p/ Área de Transferência!</span>';
+        setTimeout(() => {
+          el.innerHTML = original;
+        }, 1800);
+      });
     }
 
+    // -------------------------------------------------------------
+    // Modal Preview Handlers
+    // -------------------------------------------------------------
     function openPreview(jobId, jobTitle) {
-      document.getElementById('modalTitle').textContent = 'Preview do Currículo: ' + jobTitle;
+      document.getElementById('modalTitle').innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview: ${jobTitle}
+      `;
       document.getElementById('previewIframe').src = '/preview/' + jobId;
       document.getElementById('previewModal').classList.add('open');
     }
@@ -606,8 +1025,21 @@
       document.getElementById('previewIframe').src = 'about:blank';
     }
 
+    function handleBackdropClick(event) {
+      if (event.target.id === 'previewModal') {
+        closePreview();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePreview();
+    });
+
+    // -------------------------------------------------------------
+    // Rendering Function
+    // -------------------------------------------------------------
     function renderJobs() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
       const container = document.getElementById('jobsList');
 
       let filtered = allJobs.filter(j => {
@@ -626,7 +1058,7 @@
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state">Nenhuma vaga encontrada para este filtro.</div>';
+        container.innerHTML = '<div class="empty-state">Nenhuma vaga encontrada para os filtros selecionados.</div>';
         return;
       }
 
@@ -639,53 +1071,94 @@
 
         return `
           <div class="job-card">
-            <!-- Score -->
-            <div class="score-circle ${scoreClass}">
-              <span class="number">${score}%</span>
-              <span class="label">Match</span>
+            <!-- Score Indicator -->
+            <div class="score-indicator ${scoreClass}">
+              <span class="score-val">${score}%</span>
+              <span class="score-lbl">Match</span>
             </div>
 
-            <!-- Info -->
-            <div class="job-info">
-              <h3>${job.title || 'Vaga Sem Título'}</h3>
+            <!-- Job Content -->
+            <div class="job-content">
+              <h3>${job.title || 'Oportunidade'}</h3>
+              
               <div class="job-meta">
-                <strong>🏢 ${job.company || 'Empresa'}</strong>
-                <span>📍 ${job.location || 'Brasil'}</span>
-                <span class="badge ${isEasyApply ? 'badge-easy' : 'badge-external'}">
-                  ${isEasyApply ? '⚡ Candidatura Simplificada' : '🌐 Site Externo (ATS)'}
+                <span class="meta-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+                  <strong>${job.company || 'Empresa'}</strong>
                 </span>
-                ${job.posted ? `<span>🕒 ${job.posted}</span>` : ''}
+
+                <span class="meta-item">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                  ${job.location || 'Brasil'}
+                </span>
+
+                <span class="badge-pill ${isEasyApply ? 'badge-easy' : 'badge-external'}">
+                  ${isEasyApply ? `
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Candidatura Simplificada
+                  ` : `
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Site Externo (ATS)
+                  `}
+                </span>
+
+                ${job.posted ? `
+                  <span class="meta-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    ${job.posted}
+                  </span>
+                ` : ''}
               </div>
 
-              <!-- Skills -->
-              <div class="skills-row">
-                ${(job.matchedSkills || []).map(s => `<span class="skill-tag">✓ ${s}</span>`).join('')}
-                ${(job.missingSkills || []).map(s => `<span class="skill-gap">✕ ${s}</span>`).join('')}
+              <!-- Skills tags -->
+              <div class="skills-cluster">
+                ${(job.matchedSkills || []).map(s => `
+                  <span class="skill-tag matched">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    ${s}
+                  </span>
+                `).join('')}
+                ${(job.missingSkills || []).map(s => `
+                  <span class="skill-tag missing">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    ${s}
+                  </span>
+                `).join('')}
               </div>
             </div>
 
-            <!-- Actions -->
+            <!-- Job Actions -->
             <div class="job-actions">
-              <div class="status-text ${isGenerated ? 'status-ready' : (isQueued ? 'status-queued' : 'status-pending')}">
-                ${isGenerated ? '✅ Currículo 1-Pág Pronto' : (isQueued ? '⏳ Na Fila p/ Gerar' : '⏸️ Pendente')}
+              <div class="status-badge ${isGenerated ? 'ready' : (isQueued ? 'queued' : 'pending')}">
+                <span class="status-dot"></span>
+                <span>${isGenerated ? 'Currículo 1-Pág Pronto' : (isQueued ? 'Na Fila p/ Gerar' : 'Pendente')}</span>
               </div>
 
               ${isGenerated ? `
-                <button class="btn btn-primary" onclick="openPreview('${job.id}', '${job.company.replace(/'/g, "\\'")}')">
-                  👁️ Ver Preview
+                <button class="btn btn-primary" onclick="openPreview('${job.id}', '${(job.company || '').replace(/'/g, "\\'")}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  Ver Preview
                 </button>
-                <a class="btn btn-outline" href="/pdf/${job.id}" target="_blank">
-                  📄 Baixar PDF
+                <a class="btn btn-secondary" href="/pdf/${job.id}" target="_blank">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  Baixar PDF
                 </a>
               ` : `
-                <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-outline'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
-                  ${isQueued ? '✓ Marcada p/ o Agente (Remover)' : '+ Marcar p/ o Agente'}
+                <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-secondary'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
+                  ${isQueued ? `
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Marcada (Remover)
+                  ` : `
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Marcar p/ Agente
+                  `}
                 </button>
               `}
 
               ${job.link ? `
-                <a class="btn btn-outline" href="${job.link}" target="_blank" style="font-size: 0.78rem;">
-                  🔗 Vaga no LinkedIn
+                <a class="btn btn-secondary" href="${job.link}" target="_blank" style="font-size: 0.74rem; padding: 4px 8px;">
+                  <span>LinkedIn</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
                 </a>
               ` : ''}
             </div>
@@ -694,7 +1167,8 @@
       }).join('');
     }
 
-    // Inicialização e auto-polling a cada 3 segundos
+    // Inicialização
+    initTheme();
     fetchJobs();
     setInterval(fetchJobs, 3000);
   </script>
