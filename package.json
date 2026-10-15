@@ -1,5 +1,15 @@
 {
+  "name": "curriculo-as-code",
+  "version": "1.0.0",
+  "description": "Resume-as-Code & ATS Optimization Framework",
+  "scripts": {
+    "generate": "node automation/generate_pdf.js",
+    "audit": "node automation/audit_pages.js",
+    "audit:pages": "node automation/audit_pages.js",
+    "test": "node automation/audit_pages.js"
+  },
   "dependencies": {
+    "pdf-lib": "^1.17.1",
     "puppeteer": "^24.36.1"
   }
 }

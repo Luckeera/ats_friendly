@@ -33,12 +33,16 @@ Este repositório foi desenhado para ser operado por agentes de IA. Para gerar u
 
 ### Para Sincronizar com o Currículo Mestre (Feature A):
 1. Certifique-se de que o arquivo `.md` está em `./new_exp/new/`.
-2. Instrua a IA: *"Leia os arquivos em `./new_exp/new/` e atualize o `src/master_resume.html` corretamente nas seções de Resumo, Skills, Experiência e Projetos."*
+2. Instrua a IA: *"Leia os arquivos em `./new_exp/new/` e atualize o `src/master/v3/master_resume.html` corretamente nas seções de Resumo, Skills, Experiência e Projetos."*
 
 ### Fluxo de Otimização para Vaga:
 1. **Input:** Atualize o arquivo `./research/current/vaga.md` com a descrição da vaga desejada.
 2. **Execution:** Forneça a seguinte instrução para a IA CLI:
-   > "Analise a vaga em `./research/current/vaga.md` e o template mestre em `./src/master/v2/master_resume.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, limitando o conteúdo a **exatamente uma página**. Selecione apenas as experiências e projetos mais relevantes para o match técnico e gere o PDF usando o script em `./automation/generate_pdf.ps1`."
+   > "Analise a vaga em `./research/current/vaga.md` e o template mestre em `./src/master/v3/master_resume.html`. Crie uma versão otimizada para ATS na pasta `./archives/[NOME_DA_EMPRESA]`, limitando o conteúdo a **exatamente uma página**. Selecione apenas as experiências e projetos mais relevantes para o match técnico e gere o PDF usando `npm run generate -- --input ./archives/[NOME_DA_EMPRESA]/[ARQUIVO].html`."
+3. **Auditoria:** Verifique se todas as candidaturas respeitam a regra de 1 página rodando:
+   ```bash
+   npm run audit
+   ```
 
 ---
 

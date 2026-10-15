@@ -28,6 +28,11 @@
             position: relative;
         }
 
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
         @media print {
             body {
                 background: #fff;
@@ -35,6 +40,11 @@
             .container {
                 padding: 0.4in;
                 margin: 0;
+                min-height: auto;
+            }
+            .job, .project, .education-item {
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
         }
 
