@@ -49,5 +49,7 @@ test('TDD: parseJobDetails should extract job description and application type',
 
   const details = parseJobDetails(samplePageHtml);
   assert.ok(details.description.includes('Estamos contratando Desenvolvedor Python'), 'Description should be extracted');
+  assert.ok(details.descriptionHtml && details.descriptionHtml.includes('<p>'), 'DescriptionHtml should preserve HTML tags');
   assert.strictEqual(details.applyType, 'Candidatura Simplificada (Easy Apply)');
 });
+

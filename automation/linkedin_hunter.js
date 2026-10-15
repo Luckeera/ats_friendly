@@ -52,10 +52,18 @@ function parseJobDetails(pageHtml) {
     .replace(/\s+/g, ' ')
     .trim();
 
+  // Preserva tags semânticas limpas para renderização fiel
+  const descriptionHtml = rawDesc
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<(?!\/?(p|br|ul|ol|li|strong|b|em|i|h1|h2|h3|h4|h5|h6)\b)[^>]+>/gi, '')
+    .trim();
+
   const applyType = detectApplicationType(pageHtml);
 
   return {
     description: cleanDesc,
+    descriptionHtml,
     applyType
   };
 }
@@ -154,7 +162,8 @@ async function huntLinkedInJobs(options = {}) {
             score: matchResult.score,
             matchedSkills: matchResult.matchedSkills,
             missingSkills: matchResult.missingSkills,
-            description: details.description.slice(0, 1000)
+            description: details.description.slice(0, 1000),
+            descriptionHtml: details.descriptionHtml ? details.descriptionHtml.slice(0, 4000) : ''
           };
 
           // Salva no JobStore (atualiza estado e sincroniza CSV)
