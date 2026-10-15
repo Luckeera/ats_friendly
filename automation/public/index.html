@@ -678,11 +678,8 @@
                   📄 Baixar PDF
                 </a>
               ` : `
-                <button class="btn btn-primary" onclick="generateNow('${job.id}')" style="font-size: 0.82rem;">
-                  ⚡ Gerar Agora
-                </button>
                 <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-outline'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
-                  ${isQueued ? '✓ Na Fila (Remover)' : '+ Fila p/ Agente'}
+                  ${isQueued ? '✓ Marcada p/ o Agente (Remover)' : '+ Marcar p/ o Agente'}
                 </button>
               `}
 
