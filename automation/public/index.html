@@ -57,12 +57,14 @@
       --danger-bg: rgba(239, 68, 68, 0.1);
       --danger-border: rgba(239, 68, 68, 0.25);
 
-      --glow-color: rgba(120, 119, 198, 0.15);
+      --glow-color: rgba(120, 119, 198, 0.14);
       --dot-color: rgba(255, 255, 255, 0.035);
-      --modal-overlay: rgba(0, 0, 0, 0.75);
-      --modal-bg: #09090b;
+      --modal-overlay: rgba(0, 0, 0, 0.72);
+      --modal-bg: #0d0d11;
+      --modal-border: rgba(255, 255, 255, 0.1);
       --badge-bg: rgba(255, 255, 255, 0.04);
       --badge-border: rgba(255, 255, 255, 0.08);
+      --table-header: rgba(255, 255, 255, 0.03);
     }
 
     [data-theme="light"] {
@@ -108,8 +110,10 @@
       --dot-color: rgba(0, 0, 0, 0.04);
       --modal-overlay: rgba(0, 0, 0, 0.45);
       --modal-bg: #ffffff;
+      --modal-border: #e4e4e7;
       --badge-bg: rgba(0, 0, 0, 0.03);
       --badge-border: #e4e4e7;
+      --table-header: rgba(0, 0, 0, 0.02);
     }
 
     * {
@@ -127,7 +131,7 @@
       background-size: 100% 100%, 24px 24px;
       background-position: top center, 0 0;
       color: var(--fg);
-      font-family: -apple-system, BlinkMacSystemFont, "Geist", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Geist", "Inter", "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       letter-spacing: -0.015em;
       line-height: 1.5;
@@ -443,6 +447,7 @@
       align-items: center;
       transition: all var(--transition-fast);
       position: relative;
+      cursor: pointer;
     }
 
     .job-card:hover {
@@ -463,6 +468,7 @@
       border: 1px solid;
       background: var(--bg-subtle);
       text-align: center;
+      flex-shrink: 0;
     }
 
     .score-indicator.score-high {
@@ -505,6 +511,11 @@
       color: var(--fg);
       margin-bottom: 4px;
       letter-spacing: -0.02em;
+      transition: color var(--transition-fast);
+    }
+
+    .job-card:hover .job-content h3 {
+      color: var(--primary);
     }
 
     .job-meta {
@@ -665,7 +676,8 @@
     }
 
     /* -------------------------------------------------------------
-       Modal Dialog Preview (Minimalist Backdrop Blur)
+       NOTION CENTER PEEK MODAL
+       Modern, clean document modal centered on screen
        ------------------------------------------------------------- */
     .modal-overlay {
       position: fixed;
@@ -677,73 +689,311 @@
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      padding: 24px;
+      padding: 24px 16px;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .modal-overlay.open {
       display: flex;
+      opacity: 1;
     }
 
-    .modal-card {
+    .notion-modal {
       background: var(--modal-bg);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--modal-border);
       width: 100%;
-      max-width: 960px;
-      height: 92vh;
+      max-width: 940px;
+      height: 88vh;
       border-radius: var(--radius-lg);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--modal-border);
+      transform: scale(0.97) translateY(8px);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .modal-header {
+    .modal-overlay.open .notion-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Notion Modal Top Navigation Bar */
+    .notion-topbar {
       background: var(--bg-subtle);
       border-bottom: 1px solid var(--card-border);
-      padding: 12px 20px;
+      padding: 10px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
     }
 
-    .modal-header h3 {
+    .notion-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .notion-breadcrumbs strong {
+      color: var(--fg);
+    }
+
+    /* Notion Tab Selector inside Modal Header */
+    .notion-tabs {
+      display: inline-flex;
+      background: var(--secondary);
+      border: 1px solid var(--card-border);
+      padding: 2px;
+      border-radius: var(--radius-md);
+      gap: 2px;
+    }
+
+    .notion-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-muted);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .notion-tab-btn:hover {
+      color: var(--fg);
+    }
+
+    .notion-tab-btn.active {
+      background: var(--card);
+      color: var(--fg);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      font-weight: 600;
+    }
+
+    .notion-topbar-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notion-icon-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--fg-muted);
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .notion-icon-btn:hover {
+      background: var(--secondary);
+      color: var(--fg);
+      border-color: var(--card-border);
+    }
+
+    /* Modal Main Body Area */
+    .notion-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Tab Page: Job Details (Notion Document Style) */
+    .notion-page-view {
+      padding: 32px 40px 60px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .notion-page-header {
+      margin-bottom: 24px;
+    }
+
+    .notion-icon-cover {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--secondary);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      color: var(--fg);
+    }
+
+    .notion-page-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--fg);
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .notion-page-subtitle {
+      color: var(--fg-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Notion Properties Table */
+    .notion-properties {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      row-gap: 10px;
+      column-gap: 16px;
+      padding: 16px 0;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 28px;
+      font-size: 0.85rem;
+    }
+
+    .prop-label {
+      color: var(--fg-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .prop-val {
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Notion Section Blocks */
+    .notion-section {
+      margin-bottom: 28px;
+    }
+
+    .notion-section-title {
       font-size: 0.95rem;
       font-weight: 600;
       color: var(--fg);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .notion-callout {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--fg);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .job-description-text {
+      white-space: pre-wrap;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--fg-muted);
+      font-family: inherit;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    /* Tab Page: Resume Preview A4 Viewer */
+    .notion-preview-view {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-subtle);
+      overflow: hidden;
+    }
+
+    .preview-toolbar {
+      padding: 10px 18px;
+      background: var(--card);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .preview-info {
+      font-size: 0.82rem;
+      color: var(--fg-muted);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .modal-close-btn {
-      background: transparent;
-      border: none;
-      color: var(--fg-muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 4px;
-      border-radius: var(--radius-sm);
-      transition: color var(--transition-fast);
-    }
-
-    .modal-close-btn:hover {
-      color: var(--fg);
-      background: var(--secondary);
-    }
-
-    .modal-body {
+    .preview-iframe-wrapper {
       flex: 1;
-      background: #e5e7eb;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: #e2e8f0;
       position: relative;
     }
 
-    .modal-body iframe {
+    .preview-iframe-wrapper iframe {
       width: 100%;
       height: 100%;
       border: none;
       background: #fff;
+    }
+
+    /* Empty resume state inside modal */
+    .notion-empty-resume {
+      padding: 60px 30px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--fg-muted);
+    }
+
+    .notion-empty-resume h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+
+    .notion-empty-resume p {
+      max-width: 440px;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
 
     /* Responsive adjustments */
@@ -768,6 +1018,17 @@
       .controls-row {
         flex-direction: column;
         align-items: stretch;
+      }
+      .notion-page-view {
+        padding: 20px 16px;
+      }
+      .notion-properties {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .notion-tabs {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -903,20 +1164,165 @@
     </div>
   </div>
 
-  <!-- Modal Preview -->
-  <div class="modal-overlay" id="previewModal" onclick="handleBackdropClick(event)">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 id="modalTitle">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-          Preview do Currículo
-        </h3>
-        <button class="modal-close-btn" onclick="closePreview()" title="Fechar (ESC)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
+  <!-- -------------------------------------------------------------
+       NOTION CENTER PEEK MODAL CONTAINER
+       ------------------------------------------------------------- -->
+  <div class="modal-overlay" id="notionModalOverlay" onclick="handleBackdropClick(event)">
+    <div class="notion-modal">
+      <!-- Notion Modal Top Navigation Bar -->
+      <div class="notion-topbar">
+        <div class="notion-breadcrumbs" id="modalBreadcrumb">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span>Oportunidade</span>
+          <span>/</span>
+          <strong id="modalBreadcrumbCompany">Empresa</strong>
+        </div>
+
+        <!-- Mode / View Switcher -->
+        <div class="notion-tabs">
+          <button class="notion-tab-btn active" id="btnTabJob" onclick="switchModalTab('job')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Detalhes da Vaga
+          </button>
+          <button class="notion-tab-btn" id="btnTabResume" onclick="switchModalTab('resume')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+            Currículo 1-Pág
+          </button>
+        </div>
+
+        <!-- Top Right Actions -->
+        <div class="notion-topbar-actions">
+          <a class="notion-icon-btn" id="modalExternalLink" href="#" target="_blank" title="Abrir link original no LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          </a>
+          <button class="notion-icon-btn" onclick="closeModal()" title="Fechar (ESC)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="modal-body">
-        <iframe id="previewIframe" src="about:blank"></iframe>
+
+      <!-- Modal Content Body -->
+      <div class="notion-content" id="notionContentArea">
+        <!-- View 1: Job Details Page -->
+        <div class="notion-page-view" id="jobDetailsView">
+          <div class="notion-page-header">
+            <div class="notion-icon-cover">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <h2 class="notion-page-title" id="modalJobTitle">Título da Vaga</h2>
+            <div class="notion-page-subtitle" id="modalJobSubtitle">Empresa • Localização</div>
+          </div>
+
+          <!-- Notion Properties Table -->
+          <div class="notion-properties">
+            <div class="prop-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+              Match Score
+            </div>
+            <div class="prop-val" id="propScore">
+              <!-- Score Badge -->
+            </div>
+
+            <div class="prop-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Candidatura
+            </div>
+            <div class="prop-val" id="propApplyType">
+              <!-- Application Type -->
+            </div>
+
+            <div class="prop-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Publicada
+            </div>
+            <div class="prop-val" id="propPosted">
+              <!-- Posted Date -->
+            </div>
+
+            <div class="prop-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Status
+            </div>
+            <div class="prop-val" id="propStatus">
+              <!-- Status -->
+            </div>
+
+            <div class="prop-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Link Externo
+            </div>
+            <div class="prop-val" id="propLink">
+              <!-- Official Link -->
+            </div>
+          </div>
+
+          <!-- Skills Section -->
+          <div class="notion-section">
+            <h3 class="notion-section-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Competências Identificadas no Currículo Mestre
+            </h3>
+            <div class="skills-cluster" id="modalMatchedSkills">
+              <!-- Matched Skills -->
+            </div>
+          </div>
+
+          <div class="notion-section" id="modalMissingSkillsSection">
+            <h3 class="notion-section-title" style="color: var(--danger);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Gaps / Competências Mencionadas na Vaga
+            </h3>
+            <div class="skills-cluster" id="modalMissingSkills">
+              <!-- Missing Skills -->
+            </div>
+          </div>
+
+          <!-- Job Description Section -->
+          <div class="notion-section">
+            <h3 class="notion-section-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Descrição Completa da Vaga
+            </h3>
+            <div class="job-description-text" id="modalJobDescription">
+              Carregando descrição...
+            </div>
+          </div>
+        </div>
+
+        <!-- View 2: Resume Preview Page -->
+        <div class="notion-preview-view" id="resumePreviewView" style="display: none;">
+          <div class="preview-toolbar">
+            <div class="preview-info" id="previewToolbarInfo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+              <span>Currículo Sob Medida (Padrão A4 • 1 Página)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a class="btn btn-secondary" id="btnOpenHtml" href="#" target="_blank" style="width: auto; padding: 4px 10px; font-size: 0.78rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                Abrir HTML
+              </a>
+              <a class="btn btn-primary" id="btnDownloadPdf" href="#" target="_blank" style="width: auto; padding: 4px 12px; font-size: 0.78rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Baixar PDF
+              </a>
+            </div>
+          </div>
+
+          <div class="preview-iframe-wrapper" id="previewIframeContainer">
+            <iframe id="previewIframe" src="about:blank"></iframe>
+          </div>
+
+          <div class="notion-empty-resume" id="previewEmptyState" style="display: none;">
+            <div class="notion-icon-cover" style="width: 56px; height: 56px; margin-bottom: 16px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h4>Currículo ainda não gerado</h4>
+            <p>Esta vaga ainda não teve uma versão de 1 página compilada. Marque-a para a fila do Agente CLI gerar sob demanda.</p>
+            <div style="display: flex; gap: 10px;" id="emptyStateActionArea">
+              <!-- Queue toggle button -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -924,6 +1330,8 @@
   <script>
     let allJobs = [];
     let currentTab = 'all';
+    let activeJob = null;
+    let activeModalTab = 'job';
 
     // -------------------------------------------------------------
     // Theme Manager (Dark / Light)
@@ -962,6 +1370,15 @@
         allJobs = await res.json();
         updateStats();
         renderJobs();
+
+        // Se o modal estiver aberto, atualiza o job ativo em tempo real
+        if (activeJob) {
+          const fresh = allJobs.find(j => j.id === activeJob.id);
+          if (fresh) {
+            activeJob = fresh;
+            updateModalDetails();
+          }
+        }
       } catch (err) {
         console.error('Erro ao buscar vagas:', err);
       }
@@ -981,7 +1398,8 @@
       renderJobs();
     }
 
-    async function toggleQueue(jobId, currentStatus) {
+    async function toggleQueue(jobId, currentStatus, event) {
+      if (event) event.stopPropagation();
       const newStatus = !currentStatus;
       try {
         const res = await fetch('/api/jobs/queue', {
@@ -1009,30 +1427,177 @@
     }
 
     // -------------------------------------------------------------
-    // Modal Preview Handlers
+    // NOTION CENTER PEEK MODAL HANDLERS
     // -------------------------------------------------------------
-    function openPreview(jobId, jobTitle) {
-      document.getElementById('modalTitle').innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-        Preview: ${jobTitle}
-      `;
-      document.getElementById('previewIframe').src = '/preview/' + jobId;
-      document.getElementById('previewModal').classList.add('open');
+    function openModal(jobId, initialTab = 'job', event) {
+      if (event && (event.target.tagName === 'A' || event.target.closest('button'))) {
+        return; // não intercepta cliques em botões específicos
+      }
+
+      const job = allJobs.find(j => j.id === jobId);
+      if (!job) return;
+
+      activeJob = job;
+      document.body.style.overflow = 'hidden'; // trava scroll da página
+
+      // Se clicou no botão "Ver Preview", abre direto na aba de currículo
+      switchModalTab(initialTab);
+      updateModalDetails();
+
+      const overlay = document.getElementById('notionModalOverlay');
+      overlay.classList.add('open');
     }
 
-    function closePreview() {
-      document.getElementById('previewModal').classList.remove('open');
+    function switchModalTab(tab) {
+      activeModalTab = tab;
+      const btnJob = document.getElementById('btnTabJob');
+      const btnResume = document.getElementById('btnTabResume');
+      const jobView = document.getElementById('jobDetailsView');
+      const resumeView = document.getElementById('resumePreviewView');
+
+      if (tab === 'job') {
+        btnJob.classList.add('active');
+        btnResume.classList.remove('active');
+        jobView.style.display = 'block';
+        resumeView.style.display = 'none';
+      } else {
+        btnJob.classList.remove('active');
+        btnResume.classList.add('active');
+        jobView.style.display = 'none';
+        resumeView.style.display = 'flex';
+        loadResumeIframe();
+      }
+    }
+
+    function updateModalDetails() {
+      if (!activeJob) return;
+
+      const job = activeJob;
+      const score = parseInt(job.score, 10) || 0;
+      const isEasyApply = (job.applyType || '').includes('Easy Apply') || (job.applyType || '').includes('Simplificada');
+      const isGenerated = job.status === 'Currículo Gerado';
+      const isQueued = job.queued && !isGenerated;
+
+      // Header & Breadcrumb
+      document.getElementById('modalBreadcrumbCompany').textContent = job.company || 'Empresa';
+      document.getElementById('modalJobTitle').textContent = job.title || 'Vaga Sem Título';
+      document.getElementById('modalJobSubtitle').textContent = `${job.company || 'Empresa'} • ${job.location || 'Brasil'}`;
+      document.getElementById('modalExternalLink').href = job.link || '#';
+
+      // Properties Table
+      const scoreClass = score >= 90 ? 'score-high' : (score >= 75 ? 'score-mid' : 'score-low');
+      document.getElementById('propScore').innerHTML = `
+        <span class="badge-pill" style="font-weight: 700; background: var(--${score >= 90 ? 'emerald' : (score >= 75 ? 'amber' : 'secondary')}-bg); color: var(--${score >= 90 ? 'emerald' : (score >= 75 ? 'amber' : 'fg')}); border-color: var(--${score >= 90 ? 'emerald' : (score >= 75 ? 'amber' : 'card')}-border);">
+          ${score}% de Compatibilidade
+        </span>
+      `;
+
+      document.getElementById('propApplyType').innerHTML = `
+        <span class="badge-pill ${isEasyApply ? 'badge-easy' : 'badge-external'}">
+          ${isEasyApply ? '⚡ Candidatura Simplificada (Easy Apply)' : '🌐 Site Externo (ATS / Gupy)'}
+        </span>
+      `;
+
+      document.getElementById('propPosted').textContent = job.posted || 'Recentemente';
+
+      document.getElementById('propStatus').innerHTML = `
+        <span class="status-badge ${isGenerated ? 'ready' : (isQueued ? 'queued' : 'pending')}">
+          <span class="status-dot"></span>
+          <span>${isGenerated ? 'Currículo 1-Pág Pronto' : (isQueued ? 'Na Fila p/ Gerar' : 'Pendente')}</span>
+        </span>
+      `;
+
+      document.getElementById('propLink').innerHTML = job.link ? `
+        <a href="${job.link}" target="_blank" style="color: var(--cyan); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+          Ver anúncio oficial no LinkedIn
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      ` : '—';
+
+      // Skills
+      const matched = job.matchedSkills || [];
+      const missing = job.missingSkills || [];
+
+      document.getElementById('modalMatchedSkills').innerHTML = matched.length > 0 
+        ? matched.map(s => `
+            <span class="skill-tag matched" style="font-size: 0.78rem; padding: 3px 9px;">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              ${s}
+            </span>
+          `).join('')
+        : '<span style="color: var(--fg-subtle); font-size: 0.82rem;">Nenhuma tecnologia central explícita mapeada.</span>';
+
+      const missingSection = document.getElementById('modalMissingSkillsSection');
+      if (missing.length > 0) {
+        missingSection.style.display = 'block';
+        document.getElementById('modalMissingSkills').innerHTML = missing.map(s => `
+          <span class="skill-tag missing" style="font-size: 0.78rem; padding: 3px 9px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            ${s}
+          </span>
+        `).join('');
+      } else {
+        missingSection.style.display = 'none';
+      }
+
+      // Description
+      document.getElementById('modalJobDescription').textContent = job.description || 'Nenhum detalhe adicional informado na publicação pública.';
+
+      // Resume Preview Toolbar setup
+      if (activeModalTab === 'resume') {
+        loadResumeIframe();
+      }
+    }
+
+    function loadResumeIframe() {
+      if (!activeJob) return;
+      const job = activeJob;
+      const isGenerated = job.status === 'Currículo Gerado';
+      const iframeContainer = document.getElementById('previewIframeContainer');
+      const emptyState = document.getElementById('previewEmptyState');
+      const btnOpenHtml = document.getElementById('btnOpenHtml');
+      const btnDownloadPdf = document.getElementById('btnDownloadPdf');
+
+      if (isGenerated) {
+        iframeContainer.style.display = 'block';
+        emptyState.style.display = 'none';
+        btnOpenHtml.style.display = 'inline-flex';
+        btnDownloadPdf.style.display = 'inline-flex';
+        btnOpenHtml.href = `/preview/${job.id}`;
+        btnDownloadPdf.href = `/pdf/${job.id}`;
+        document.getElementById('previewIframe').src = `/preview/${job.id}`;
+      } else {
+        iframeContainer.style.display = 'none';
+        emptyState.style.display = 'flex';
+        btnOpenHtml.style.display = 'none';
+        btnDownloadPdf.style.display = 'none';
+        document.getElementById('previewIframe').src = 'about:blank';
+
+        const isQueued = job.queued;
+        document.getElementById('emptyStateActionArea').innerHTML = `
+          <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-primary'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'}, event)" style="width: auto; padding: 8px 18px;">
+            ${isQueued ? '✓ Marcada na Fila (Remover)' : '+ Marcar para o Agente Gerar'}
+          </button>
+        `;
+      }
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById('notionModalOverlay');
+      overlay.classList.remove('open');
+      document.body.style.overflow = 'auto'; // restaura scroll
       document.getElementById('previewIframe').src = 'about:blank';
+      activeJob = null;
     }
 
     function handleBackdropClick(event) {
-      if (event.target.id === 'previewModal') {
-        closePreview();
+      if (event.target.id === 'notionModalOverlay') {
+        closeModal();
       }
     }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closePreview();
+      if (e.key === 'Escape') closeModal();
     });
 
     // -------------------------------------------------------------
@@ -1070,7 +1635,7 @@
         const isQueued = job.queued && !isGenerated;
 
         return `
-          <div class="job-card">
+          <div class="job-card" onclick="openModal('${job.id}', 'job', event)" title="Clique para abrir detalhes completos da vaga no modal Notion">
             <!-- Score Indicator -->
             <div class="score-indicator ${scoreClass}">
               <span class="score-val">${score}%</span>
@@ -1135,16 +1700,16 @@
               </div>
 
               ${isGenerated ? `
-                <button class="btn btn-primary" onclick="openPreview('${job.id}', '${(job.company || '').replace(/'/g, "\\'")}')">
+                <button class="btn btn-primary" onclick="openModal('${job.id}', 'resume', event)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                  Ver Preview
+                  Ver Currículo
                 </button>
-                <a class="btn btn-secondary" href="/pdf/${job.id}" target="_blank">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                  Baixar PDF
-                </a>
+                <button class="btn btn-secondary" onclick="openModal('${job.id}', 'job', event)" style="font-size: 0.76rem;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Detalhes da Vaga
+                </button>
               ` : `
-                <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-secondary'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
+                <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-secondary'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'}, event)">
                   ${isQueued ? `
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     Marcada (Remover)
@@ -1153,10 +1718,14 @@
                     Marcar p/ Agente
                   `}
                 </button>
+                <button class="btn btn-secondary" onclick="openModal('${job.id}', 'job', event)" style="font-size: 0.76rem;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Ver Detalhes
+                </button>
               `}
 
               ${job.link ? `
-                <a class="btn btn-secondary" href="${job.link}" target="_blank" style="font-size: 0.74rem; padding: 4px 8px;">
+                <a class="btn btn-secondary" href="${job.link}" target="_blank" onclick="event.stopPropagation()" style="font-size: 0.74rem; padding: 3px 8px;">
                   <span>LinkedIn</span>
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
                 </a>
