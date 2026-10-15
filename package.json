@@ -6,7 +6,10 @@
     "generate": "node automation/generate_pdf.js",
     "audit": "node automation/audit_pages.js",
     "audit:pages": "node automation/audit_pages.js",
-    "test": "node automation/audit_pages.js"
+    "test:unit": "node --test test/*.test.js",
+    "test": "node --test test/*.test.js && node automation/audit_pages.js",
+    "hunt": "node automation/linkedin_hunter.js",
+    "hunt:jobs": "node automation/linkedin_hunter.js"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",

@@ -44,6 +44,14 @@ Este repositório foi desenhado para ser operado por agentes de IA. Para gerar u
    npm run audit
    ```
 
+### Fluxo On-Demand de Busca no LinkedIn (Job Hunter & Match):
+1. **Busca e Scoring:** Execute a varredura pública de vagas alinhadas ao seu currículo mestre:
+   ```bash
+   npm run hunt
+   ```
+2. **Planilha de Controle:** As vagas encontradas são consolidadas em `vagas.csv`, ordenadas por **Match Score**, detalhando skills atendidas, gaps e se a candidatura é simplificada ou via ATS externo.
+3. **Geração para Top Matches (90%+):** O agente gera a versão sob medida de 1 página em `archives/[EMPRESA]` e registra o caminho do PDF diretamente na planilha.
+
 ---
 
 ## 🤖 AI-Assisted Content Optimization
