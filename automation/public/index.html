@@ -570,6 +570,31 @@
       }
     }
 
+    async function generateNow(jobId) {
+      const btn = event.target;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '⏳ Gerando...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/jobs/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: jobId })
+        });
+        if (res.ok) {
+          fetchJobs();
+        } else {
+          const err = await res.json();
+          alert('Erro ao gerar: ' + (err.error || 'Falha na geração'));
+        }
+      } catch (err) {
+        alert('Erro de conexão: ' + err.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
     function openPreview(jobId, jobTitle) {
       document.getElementById('modalTitle').textContent = 'Preview do Currículo: ' + jobTitle;
       document.getElementById('previewIframe').src = '/preview/' + jobId;
@@ -653,8 +678,11 @@
                   📄 Baixar PDF
                 </a>
               ` : `
+                <button class="btn btn-primary" onclick="generateNow('${job.id}')" style="font-size: 0.82rem;">
+                  ⚡ Gerar Agora
+                </button>
                 <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-outline'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
-                  ${isQueued ? '✓ Na Fila (Remover)' : '+ Adicionar à Fila'}
+                  ${isQueued ? '✓ Na Fila (Remover)' : '+ Fila p/ Agente'}
                 </button>
               `}
 

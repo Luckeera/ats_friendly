@@ -77,6 +77,21 @@ function createServer(options = {}) {
         return sendJson(res, 200, updated);
       }
 
+      // 3.5. API: Disparar geração imediata para uma vaga via TailorService
+      if (method === 'POST' && pathname === '/api/jobs/generate') {
+        const body = await parseJsonBody(req);
+        if (!body.id) {
+          return sendJson(res, 400, { error: 'O campo id é obrigatório' });
+        }
+        const { tailorJobResume } = require('./tailor_service');
+        try {
+          const result = await tailorJobResume({ jobId: body.id, store });
+          return sendJson(res, 200, result);
+        } catch (err) {
+          return sendJson(res, 500, { error: err.message });
+        }
+      }
+
       // 4. Preview HTML do currículo gerado
       if (method === 'GET' && pathname.startsWith('/preview/')) {
         const jobId = pathname.replace('/preview/', '');
