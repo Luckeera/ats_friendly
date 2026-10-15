@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume-as-Code | Painel de Vagas & Automação ATS</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --easy-apply: #06b6d4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 16px;
+    }
+
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background-color: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .stat-card .label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* Action Banner */
+    .action-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.1));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 14px 20px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-banner .instruction {
+      font-size: 0.95rem;
+    }
+
+    .action-banner code {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #93c5fd;
+      font-family: monospace;
+    }
+
+    /* Tabs & Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--card-bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Search */
+    .search-box input {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      width: 280px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Jobs List / Cards */
+    .jobs-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .job-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      transition: border-color 0.2s, transform 0.1s;
+    }
+
+    .job-card:hover {
+      border-color: #374151;
+    }
+
+    /* Score Badge */
+    .score-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      text-align: center;
+      border: 2px solid;
+    }
+
+    .score-high {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .score-mid {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .score-low {
+      background: rgba(156, 163, 175, 0.1);
+      border-color: #4b5563;
+      color: #9ca3af;
+    }
+
+    .score-circle .number {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .score-circle .label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Job Info */
+    .job-info h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .job-meta {
+      display: flex;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-easy {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--easy-apply);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .badge-external {
+      background: rgba(156, 163, 175, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(156, 163, 175, 0.3);
+    }
+
+    .skills-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .skill-tag {
+      background: #1f2937;
+      color: #93c5fd;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .skill-gap {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    /* Actions */
+    .job-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 160px;
+      align-items: flex-end;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .status-ready { color: var(--success); }
+    .status-queued { color: var(--warning); }
+    .status-pending { color: var(--text-muted); }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+    }
+    .btn-outline:hover { background: #1f2937; }
+
+    .btn-queue-active {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--warning);
+      color: var(--warning);
+    }
+
+    .btn-queue-active:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: 8px;
+    }
+
+    /* Modal Preview */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-container {
+      background: #fff;
+      color: #000;
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      background: #111827;
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      flex: 1;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .modal-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>🎯 Resume-as-Code & ATS Hunter</h1>
+        <p>Painel Inteligente de Oportunidades & Geração de Currículos 1-Page</p>
+      </div>
+      <div>
+        <span class="live-badge">
+          <span class="pulse"></span>
+          Conexão Ativa (Polling 3s)
+        </span>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">Total de Vagas</div>
+        <div class="value" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Top Match (90%+)</div>
+        <div class="value" style="color: var(--success);" id="stat-top">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Na Fila de Geração</div>
+        <div class="value" style="color: var(--warning);" id="stat-queue">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Currículos Gerados</div>
+        <div class="value" style="color: #60a5fa;" id="stat-generated">0</div>
+      </div>
+    </div>
+
+    <!-- Action Banner -->
+    <div class="action-banner">
+      <div class="instruction">
+        💬 <strong>Como gerar os currículos da fila:</strong> Basta dizer no chat: <code>Agente, gere os currículos das vagas que estão na fila</code>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="fetchJobs()">🔄 Atualizar Agora</button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="setTab('all', this)">Todas as Vagas</button>
+        <button class="tab-btn" onclick="setTab('top', this)">🔥 Top Match (90%+)</button>
+        <button class="tab-btn" onclick="setTab('queued', this)">⏳ Na Fila</button>
+        <button class="tab-btn" onclick="setTab('generated', this)">✅ Prontos (Com PDF)</button>
+      </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Filtrar por cargo, empresa, tech..." oninput="renderJobs()">
+      </div>
+    </div>
+
+    <!-- Job Cards -->
+    <div class="jobs-container" id="jobsList">
+      <div class="empty-state">Carregando vagas...</div>
+    </div>
+  </div>
+
+  <!-- Modal Preview -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modalTitle">Preview do Currículo</h3>
+        <button class="modal-close" onclick="closePreview()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="previewIframe" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allJobs = [];
+    let currentTab = 'all';
+
+    async function fetchJobs() {
+      try {
+        const res = await fetch('/api/jobs');
+        allJobs = await res.json();
+        updateStats();
+        renderJobs();
+      } catch (err) {
+        console.error('Erro ao buscar vagas:', err);
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = allJobs.length;
+      document.getElementById('stat-top').textContent = allJobs.filter(j => (j.score || 0) >= 90).length;
+      document.getElementById('stat-queue').textContent = allJobs.filter(j => j.queued && j.status !== 'Currículo Gerado').length;
+      document.getElementById('stat-generated').textContent = allJobs.filter(j => j.status === 'Currículo Gerado').length;
+    }
+
+    function setTab(tab, el) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+      renderJobs();
+    }
+
+    async function toggleQueue(jobId, currentStatus) {
+      const newStatus = !currentStatus;
+      try {
+        const res = await fetch('/api/jobs/queue', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: jobId, queued: newStatus })
+        });
+        if (res.ok) {
+          fetchJobs();
+        }
+      } catch (err) {
+        alert('Erro ao atualizar fila: ' + err.message);
+      }
+    }
+
+    function openPreview(jobId, jobTitle) {
+      document.getElementById('modalTitle').textContent = 'Preview do Currículo: ' + jobTitle;
+      document.getElementById('previewIframe').src = '/preview/' + jobId;
+      document.getElementById('previewModal').classList.add('open');
+    }
+
+    function closePreview() {
+      document.getElementById('previewModal').classList.remove('open');
+      document.getElementById('previewIframe').src = 'about:blank';
+    }
+
+    function renderJobs() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const container = document.getElementById('jobsList');
+
+      let filtered = allJobs.filter(j => {
+        const matchesQuery = 
+          (j.title || '').toLowerCase().includes(query) ||
+          (j.company || '').toLowerCase().includes(query) ||
+          (j.location || '').toLowerCase().includes(query) ||
+          ((j.matchedSkills || []).join(' ')).toLowerCase().includes(query);
+
+        if (!matchesQuery) return false;
+
+        if (currentTab === 'top') return (j.score || 0) >= 90;
+        if (currentTab === 'queued') return j.queued && j.status !== 'Currículo Gerado';
+        if (currentTab === 'generated') return j.status === 'Currículo Gerado';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state">Nenhuma vaga encontrada para este filtro.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(job => {
+        const score = parseInt(job.score, 10) || 0;
+        const scoreClass = score >= 90 ? 'score-high' : (score >= 75 ? 'score-mid' : 'score-low');
+        const isEasyApply = (job.applyType || '').includes('Easy Apply') || (job.applyType || '').includes('Simplificada');
+        const isGenerated = job.status === 'Currículo Gerado';
+        const isQueued = job.queued && !isGenerated;
+
+        return `
+          <div class="job-card">
+            <!-- Score -->
+            <div class="score-circle ${scoreClass}">
+              <span class="number">${score}%</span>
+              <span class="label">Match</span>
+            </div>
+
+            <!-- Info -->
+            <div class="job-info">
+              <h3>${job.title || 'Vaga Sem Título'}</h3>
+              <div class="job-meta">
+                <strong>🏢 ${job.company || 'Empresa'}</strong>
+                <span>📍 ${job.location || 'Brasil'}</span>
+                <span class="badge ${isEasyApply ? 'badge-easy' : 'badge-external'}">
+                  ${isEasyApply ? '⚡ Candidatura Simplificada' : '🌐 Site Externo (ATS)'}
+                </span>
+                ${job.posted ? `<span>🕒 ${job.posted}</span>` : ''}
+              </div>
+
+              <!-- Skills -->
+              <div class="skills-row">
+                ${(job.matchedSkills || []).map(s => `<span class="skill-tag">✓ ${s}</span>`).join('')}
+                ${(job.missingSkills || []).map(s => `<span class="skill-gap">✕ ${s}</span>`).join('')}
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="job-actions">
+              <div class="status-text ${isGenerated ? 'status-ready' : (isQueued ? 'status-queued' : 'status-pending')}">
+                ${isGenerated ? '✅ Currículo 1-Pág Pronto' : (isQueued ? '⏳ Na Fila p/ Gerar' : '⏸️ Pendente')}
+              </div>
+
+              ${isGenerated ? `
+                <button class="btn btn-primary" onclick="openPreview('${job.id}', '${job.company.replace(/'/g, "\\'")}')">
+                  👁️ Ver Preview
+                </button>
+                <a class="btn btn-outline" href="/pdf/${job.id}" target="_blank">
+                  📄 Baixar PDF
+                </a>
+              ` : `
+                <button class="btn ${isQueued ? 'btn-queue-active' : 'btn-outline'}" onclick="toggleQueue('${job.id}', ${job.queued ? 'true' : 'false'})">
+                  ${isQueued ? '✓ Na Fila (Remover)' : '+ Adicionar à Fila'}
+                </button>
+              `}
+
+              ${job.link ? `
+                <a class="btn btn-outline" href="${job.link}" target="_blank" style="font-size: 0.78rem;">
+                  🔗 Vaga no LinkedIn
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Inicialização e auto-polling a cada 3 segundos
+    fetchJobs();
+    setInterval(fetchJobs, 3000);
+  </script>
+</body>
+</html>

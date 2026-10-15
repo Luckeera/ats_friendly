@@ -44,13 +44,29 @@ Este repositório foi desenhado para ser operado por agentes de IA. Para gerar u
    npm run audit
    ```
 
-### Fluxo On-Demand de Busca no LinkedIn (Job Hunter & Match):
-1. **Busca e Scoring:** Execute a varredura pública de vagas alinhadas ao seu currículo mestre:
+### Fluxo Completo: Busca, Painel Web e Fila de Geração:
+1. **Inicie o Painel Web Interativo:**
+   ```bash
+   npm run server
+   ```
+   Acesse `http://localhost:3000` no seu navegador para ver o dashboard em tempo real com auto-refresh.
+
+2. **Varredura On-Demand de Vagas (LinkedIn Hunter):**
    ```bash
    npm run hunt
    ```
-2. **Planilha de Controle:** As vagas encontradas são consolidadas em `vagas.csv`, ordenadas por **Match Score**, detalhando skills atendidas, gaps e se a candidatura é simplificada ou via ATS externo.
-3. **Geração para Top Matches (90%+):** O agente gera a versão sob medida de 1 página em `archives/[EMPRESA]` e registra o caminho do PDF diretamente na planilha.
+   - O crawler busca vagas recentes no LinkedIn (sem login, modo guest seguro).
+   - Calcula o match com `src/master/v3/master_resume.html` e salva em `vagas.json` e `vagas.csv`.
+   - Vagas com **Match >= 90%** disparam a geração do currículo de 1 página automaticamente!
+
+3. **Fila Manual para Vagas (<90%):**
+   - No painel web (`http://localhost:3000`), clique no botão **`+ Adicionar à Fila`** em qualquer vaga desejada.
+   - Para o agente processar a fila, basta rodar:
+     ```bash
+     npm run process:queue
+     ```
+     *(Ou simplesmente pedir: "Agente, gere os currículos das vagas na fila")*
+   - O painel exibe quando o currículo está sendo criado e quando fica pronto, permitindo **Ver Preview** ou **Baixar PDF** diretamente na interface!
 
 ---
 

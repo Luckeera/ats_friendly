@@ -9,7 +9,9 @@
     "test:unit": "node --test test/*.test.js",
     "test": "node --test test/*.test.js && node automation/audit_pages.js",
     "hunt": "node automation/linkedin_hunter.js",
-    "hunt:jobs": "node automation/linkedin_hunter.js"
+    "hunt:jobs": "node automation/linkedin_hunter.js",
+    "server": "node automation/server.js",
+    "process:queue": "node automation/queue_processor.js"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",

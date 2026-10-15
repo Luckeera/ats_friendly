@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const { extractProfile, calculateMatch, detectApplicationType } = require('./match_engine');
 const { saveJobsToCsv } = require('./spreadsheet_manager');
+const { defaultStore } = require('./job_store');
+const { processQueue } = require('./queue_processor');
 
 /**
  * LinkedIn Hunter Module
@@ -136,22 +138,26 @@ async function huntLinkedInJobs(options = {}) {
             score: matchResult.score,
             matchedSkills: matchResult.matchedSkills,
             missingSkills: matchResult.missingSkills,
-            status: matchResult.isTopMatch ? 'Pendente (Match 90%+)' : 'Pendente',
             description: details.description.slice(0, 1000)
           };
 
-          processedJobs.push(jobRecord);
+          // Salva no JobStore (atualiza estado e sincroniza CSV)
+          const stored = defaultStore.upsertJob(jobRecord);
+          processedJobs.push(stored);
+
+          // Se for Top Match (90%+), dispara geração imediata do currículo sob medida
+          if (matchResult.isTopMatch) {
+            console.log(`  🔥 Match alto (${matchResult.score}%) detectado! Iniciando geração automática do currículo...`);
+            await processQueue({ store: defaultStore });
+          }
         } catch (err) {
           console.warn(`  ⚠️ Falha ao inspecionar vaga ${card.title}: ${err.message}`);
         }
       }
     }
 
-    // Salva na planilha CSV
-    if (processedJobs.length > 0) {
-      saveJobsToCsv(processedJobs, csvOutputPath);
-      console.log(`\n💾 ${processedJobs.length} vagas salvas e ordenadas em: ${csvOutputPath}`);
-    }
+    console.log(`\n💾 ${processedJobs.length} vagas consolidadas no painel e na planilha.`);
+    return processedJobs;
 
     return processedJobs;
   } finally {
