@@ -6,9 +6,11 @@
 - **ATS Optimization:** Maintain the single-column structure and standard semantic naming conventions defined in the master templates.
 
 ## Workflow Integration
-- **Master Sync (Feature A):** Ensure `master_resume.html` remains the comprehensive source of truth, even if it exceeds one page. The one-page limit strictly applies to individual job applications in `/archives`.
+- **Master Versioning & Sync (Feature A):** The master resume is organized into immutable incremental versions under `src/master/vX/` (e.g., `v1`, `v2`, `v3`, `v4`...). When candidate career milestones, new roles, or major projects are added, they must be versioned forward in a new directory rather than overwriting historical master snapshots. The automated matching and tailoring engines dynamically discover and load the highest version available via `automation/master_manager.js` (or a specific version via `MASTER_RESUME_VERSION` env var).
+- **Master Resume as Truth:** The active master resume remains the comprehensive source of truth, even if it exceeds one page. The one-page limit strictly applies to individual job applications in `/archives`.
 - **PDF Compilation & Validation:** When generating a PDF, always verify that the visual output remains professional, clean, and strictly conforms to the single A4 page boundary.
 - **Test-Driven Development (TDD):** Any new features or changes to matching algorithms, scraping parsers, store management, or adapters must be backed by unit tests in `./test`.
+- **Atomic Git Cadence (Mandatory):** Whenever changes to code, master resumes, templates, or documentation pass verification gates, commit them atomically using Conventional Commits before concluding the interaction.
 
 ## Automation & Hunter Architecture
 - **Safe Guest-Mode Scraping:** Public LinkedIn scraping must run strictly in unauthenticated guest mode to eliminate account suspension risks.

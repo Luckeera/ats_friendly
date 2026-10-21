@@ -16,17 +16,18 @@ Em vez de editar arquivos estáticos, este projeto utiliza uma abordagem baseada
 - **Sincronização em Planilha e JSON:** Exportação contínua para [vagas.csv](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/vagas.csv) (com BOM UTF-8 para Excel) e persistência em [data/vagas.json](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/data/vagas.json).
 - **Camada Desacoplada de IA (AI Provider Layer):** Arquitetura plug-and-play que suporta motor local heurístico (offline), Google Gemini API e OpenAI/Groq/Ollama, preparando a solução para operar tanto via CLI quanto como SaaS.
 - **Extração de Projetos (Feature B):** Processamento automático de pastas de projetos em `@new_project/project/` e `@new_project/OBSERVATIONS.md` para gerar resumos técnicos em `@new_exp/new/`.
-- **Sincronização Mestre (Feature A):** Atualização do `src/master/v3/master_resume.html` baseada em novos projetos e experiências consolidadas.
+- **Sincronização & Versionamento Mestre (Feature A):** Gestão incremental de versões imutáveis em `src/master/vX/` (`v1`, `v2`, `v3`, `v4`...), preservando snapshots históricos do candidato. Descoberta e resolução automática da versão mais recente via `automation/master_manager.js`.
 
 ---
 
 ## 📁 Estrutura do Projeto
 
-- `/src`: Templates base e currículo mestre (`master_resume.html`).
+- `/src/master`: Histórico de versões do currículo mestre (`v1/`, `v2/`, `v3/`, etc.), onde cada versão contém seu próprio `master_resume.html` e `master_resume.pdf`.
 - `/data`: Estado persistente em JSON (`vagas.json`).
 - `/vagas.csv`: Planilha de vagas compatível com Microsoft Excel e Google Sheets.
 - `/archives`: Histórico de currículos gerados sob medida para vagas específicas (HTML e PDF de 1 pág).
 - `/automation`: Módulos de automação:
+  - `master_manager.js`: Descoberta dinâmica e resolução de versões do currículo mestre (`src/master/vX/`).
   - `linkedin_hunter.js`: Crawler em modo guest do LinkedIn.
   - `match_engine.js`: Extração de perfil, keywords e cálculo de score.
   - `spreadsheet_manager.js`: Persistência e deduplicação de CSV.
@@ -56,7 +57,7 @@ Acesse `http://localhost:3000` para visualizar todas as vagas coletadas, status 
 npm run hunt
 ```
 - Coleta oportunidades recentes no LinkedIn sem autenticação.
-- Calcula o score de compatibilidade contra `src/master/v3/master_resume.html`.
+- Calcula o score de compatibilidade contra a versão mestre ativa (resolvida dinamicamente via `automation/master_manager.js`, por padrão a maior versão em `src/master/vX/`).
 - Vagas com **Match >= 90%** geram automaticamente o currículo adaptado de 1 página em `/archives/`.
 - Vagas com **Match < 90%** ficam registradas como pendentes na planilha e no dashboard.
 
@@ -103,7 +104,7 @@ Para a futura funcionalidade de monitoramento de respostas de processos seletivo
 ### 🛡️ Proteção de Dados e Limpeza
 - Este repositório é utilizado para versionamento pessoal. Caso utilize este framework como base para seus próprios currículos:
   - Limpe dados das pastas `/archives/` e `src/master/`.
-  - Atualize `src/master/v3/master_resume.html` com suas informações.
+  - Atualize ou crie sua versão mestre em `src/master/vX/master_resume.html` (o sistema detectará automaticamente a maior versão `vX`).
 
 ---
 *Framework desenvolvido sob práticas de engenharia de software, TDD e automação orientada a agentes de IA.*
