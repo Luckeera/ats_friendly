@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Valente de Lima - Suporte Técnico & Gestão de TI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.28;
+            color: #111;
+            background: #f5f5f5;
+            font-size: 9.4pt;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 0.46in 0.48in;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                padding: 0.42in 0.46in;
+                margin: 0;
+                min-height: auto;
+            }
+            .job, .project, .education-item {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .page-break {
+                page-break-after: always;
+                break-after: page;
+                height: 0;
+                margin: 0;
+                padding: 0;
+                display: block;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1.5px solid #222;
+            padding-bottom: 6px;
+        }
+
+        .header h1 {
+            font-size: 17.5pt;
+            font-weight: bold;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+            color: #000;
+        }
+
+        .header .title {
+            font-size: 10.5pt;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #2b2b2b;
+        }
+
+        .contact {
+            font-size: 8.9pt;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        .contact a {
+            color: #111;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 9px;
+        }
+
+        .section-title {
+            font-size: 10.2pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+            color: #000;
+        }
+
+        /* Summary */
+        .summary {
+            text-align: justify;
+            line-height: 1.32;
+            font-size: 9.3pt;
+        }
+
+        /* Skills */
+        .skills-grid {
+            line-height: 1.35;
+            font-size: 9.1pt;
+        }
+
+        .skill-category {
+            margin-bottom: 3.5px;
+        }
+
+        .skill-category strong {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 8px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1px;
+        }
+
+        .job-title-company {
+            font-weight: bold;
+            font-size: 9.8pt;
+            color: #000;
+        }
+
+        .job-date {
+            font-style: italic;
+            font-size: 8.8pt;
+            color: #444;
+        }
+
+        .job-position {
+            font-style: italic;
+            margin-bottom: 3px;
+            font-size: 9.2pt;
+            color: #222;
+        }
+
+        .job ul {
+            margin-left: 17px;
+            margin-top: 2px;
+        }
+
+        .job li {
+            margin-bottom: 2.5px;
+            line-height: 1.3;
+            font-size: 9.1pt;
+            text-align: justify;
+        }
+
+        /* Projects */
+        .project {
+            margin-bottom: 7px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1px;
+            font-size: 9.6pt;
+        }
+
+        .project-title {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .project-date {
+            font-style: italic;
+            font-size: 8.8pt;
+            color: #444;
+        }
+
+        .project-role {
+            font-style: italic;
+            font-size: 9pt;
+            margin-bottom: 2px;
+            color: #222;
+        }
+
+        .project ul {
+            margin-left: 17px;
+            margin-top: 2px;
+        }
+
+        .project li {
+            margin-bottom: 2.5px;
+            line-height: 1.3;
+            font-size: 9.1pt;
+            text-align: justify;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 5px;
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .education-school {
+            font-weight: bold;
+            font-size: 9.5pt;
+        }
+
+        .education-date {
+            font-style: italic;
+            font-size: 8.8pt;
+            color: #444;
+        }
+
+        .education-degree {
+            font-size: 9.2pt;
+            margin-top: 1px;
+        }
+
+        /* Metrics highlighting */
+        strong.metric {
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="resume-container">
+        <!-- CABEÇALHO -->
+        <div class="header">
+            <h1>Lucas Valente de Lima</h1>
+            <div class="title">Suporte Técnico, Gestão de Ferramentas & Processos de TI</div>
+            <div class="contact">
+                Belém, PA | (91) 98583-0976 | <a href="mailto:lvldgls@gmail.com">lvldgls@gmail.com</a> |
+                <a href="https://www.linkedin.com/in/lucas-lima-bb568b355/" target="_blank">linkedin.com/in/lucas-lima-bb568b355</a> | 
+                <a href="https://github.com/Luckeera" target="_blank">github.com/Luckeera</a>
+            </div>
+        </div>
+
+        <!-- RESUMO PROFISSIONAL -->
+        <div class="section">
+            <div class="section-title">Resumo Profissional</div>
+            <div class="summary">
+                Profissional de Tecnologia da Informação com sólida experiência em <strong>suporte técnico, manutenção de serviços computacionais, gestão de ferramentas e acompanhamento de fluxos e processos operacionais</strong>. Vivência consolidada no atendimento e suporte a usuários de grande escala (<strong>~3.000 a 5.000 usuários ativos</strong> no ecossistema UNAMA / Grupo SER Educacional), atuando na resolução ágil de chamados técnicos, diagnóstico de incidentes de hardware, redes e sistemas operacionais, e garantia de estabilidade dos serviços de TI. Forte perfil analítico voltado à <strong>pesquisa tecnológica contínua</strong>, identificando e homologando ferramentas modernas, soluções de automação (PowerShell, Bash, Python) e tecnologias emergentes de Inteligência Artificial para otimização de rotinas de suporte e produtividade. Prática no gerenciamento de fluxos com <strong>Jira, Vikunja e metodologias ágeis (Kanban/Scrum)</strong>, documentação de processos e governança de acessos. Certificado <strong>AWS Certified Cloud Practitioner</strong> e graduando em Ciência da Computação.
+            </div>
+        </div>
+
+        <!-- HABILIDADES TÉCNICAS -->
+        <div class="section">
+            <div class="section-title">Habilidades Técnicas & Competências</div>
+            <div class="skills-grid">
+                <div class="skill-category"><strong>Suporte Técnico & Atendimento a Usuários:</strong> Atendimento e suporte a usuários finais (Nível 1 e 2), triagem e resolução de chamados técnicos, gestão de incidentes e requisições de serviço, suporte remoto e presencial, diagnóstico de hardware, periféricos, redes locais (TCP/IP, DNS, DHCP) e sistemas operacionais (Windows 10/11, Linux, Windows Server).</div>
+                <div class="skill-category"><strong>Gestão de Ferramentas, Fluxos & Processos:</strong> Acompanhamento e modelagem de fluxos de trabalho de TI, controle e acompanhamento de chamados (Jira Service Management, Jira Software, Vikunja), gestão de acessos e credenciais de usuários, boas práticas de ITSM / ITIL, documentação técnica, criação de manuais operacionais e bases de conhecimento (Knowledge Base).</div>
+                <div class="skill-category"><strong>Pesquisa Tecnológica & Automação:</strong> Pesquisa, avaliação comparativa e homologação de novas soluções e ferramentas de TI; criação de scripts de automação de rotinas operacionais (PowerShell, Bash, Python); adoção de ferramentas assistidas por IA para aceleração de diagnósticos técnicos e aumento de produtividade das equipes.</div>
+                <div class="skill-category"><strong>Nuvem, Infraestrutura & Bancos de Dados:</strong> Fundamentos de nuvem AWS (Amazon EC2, S3, IAM, CloudWatch, Lambda - certificado AWS Certified Cloud Practitioner), conteinerização com Docker, consultas SQL para diagnóstico e extração de relatórios (PostgreSQL, MySQL, SQLite).</div>
+                <div class="skill-category"><strong>Metodologias & Controle de Versão:</strong> Metodologias Ágeis (Kanban, Scrum), controle de versões com Git e GitHub, organização de esteiras operacionais, governança e conformidade com diretrizes de segurança da informação e LGPD.</div>
+            </div>
+        </div>
+
+        <!-- EXPERIÊNCIA PROFISSIONAL (PARTE 1) -->
+        <div class="section">
+            <div class="section-title">Experiência Profissional</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">V3L0Z (UNAMA - Grupo SER Educacional)</div>
+                    <div class="job-date">Maio 2025 - Presente</div>
+                </div>
+                <div class="job-position">Analista de Suporte a Sistemas, Sustentação de TI & Desenvolvedor de Software</div>
+                <ul>
+                    <li>Atuação central no suporte técnico, manutenção preventiva/corretiva e sustentação de sistemas laboratoriais e acadêmicos, garantindo a continuidade de serviços para <strong class="metric">~3.000 a 5.000 usuários ativos</strong> (professores, alunos e equipes técnicas) distribuídos em <strong class="metric">59+ unidades</strong> do grupo educacional.</li>
+                    <li>Acompanhamento diário da gestão de ferramentas de suporte, triagem de incidentes e acompanhamento de fluxos de atendimento com <strong class="metric">Jira e Vikunja</strong>, mantendo SLAs de resposta e orientação direta aos usuários.</li>
+                    <li>Condução de pesquisas tecnológicas para identificar gargalos e implementar soluções de modernização nas ferramentas internas, padronizando esteiras operacionais e reduzindo falhas em ambientes de produção em <strong class="metric">70%</strong>.</li>
+                    <li>Elaboração de documentação técnica, manuais de procedimentos para operadores e instruções de suporte ao usuário final, promovendo autonomia operacional e reduzindo a reincidência de dúvidas e chamados repetitivos.</li>
+                    <li>Diagnóstico e otimização de consultas a bancos de dados relacionais (SQL) e rotinas de validação de sistemas, alcançando redução de <strong class="metric">30%</strong> no tempo de resposta para os usuários.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Bhaskara IA</div>
+                    <div class="job-date">Jan 2026 - Set 2026</div>
+                </div>
+                <div class="job-position">Analista de Governança de TI, Ferramentas & Engenharia de Software</div>
+                <ul>
+                    <li>Acompanhamento e gestão de ferramentas operacionais e fluxos de trabalho de engenharia, estabelecendo esteiras estruturadas de controle, conformidade e governança para ambientes tecnológicos de alta criticidade.</li>
+                    <li>Pesquisa tecnológica aprofundada de ferramentas inovadoras e modelos de Inteligência Artificial (Google Gemini, Claude Code, OpenAI), avaliando viabilidade técnica, estabilidade e ganhos de produtividade operacional (<strong class="metric">3x mais rapidez</strong> em entregas).</li>
+                    <li>Suporte técnico a equipes multidisciplinares e usuários operacionais de negócio, auxiliando na utilização de novas ferramentas digitais, solucionando problemas de conectividade e sanando impedimentos técnicos de fluxo.</li>
+                    <li>Implementação de políticas de isolamento seguro (sandboxing) e regras de controle de acesso (princípio do menor privilégio), prevenindo mutações indevidas em bancos de dados corporativos e resguardando dados sensíveis conforme a LGPD.</li>
+                    <li>Monitoramento contínuo da integridade e saúde de serviços em produção, gerenciando filas de processamento assíncrono e prevenindo incidentes de sobrecarga de memória (anti-OOM).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- QUEBRA DE PÁGINA EXPLÍCITA PARA O CORTE LIMPO ENTRE PÁGINA 1 E PÁGINA 2 -->
+        <div class="page-break"></div>
+
+        <!-- EXPERIÊNCIA PROFISSIONAL (PARTE 2 / PÁGINA 2) -->
+        <div class="section">
+            <div class="section-title">Experiência Profissional (Continuação)</div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title-company">Compass UOL</div>
+                    <div class="job-date">Maio 2025 - Out 2025</div>
+                </div>
+                <div class="job-position">Líder Técnico de Squad & Engenheiro de Infraestrutura de Dados AWS</div>
+                <ul>
+                    <li>Liderança operacional de squad multidisciplinar com <strong class="metric">4 profissionais</strong>, coordenando o fluxo de trabalho em cerimônias ágeis, remoção de impedimentos técnicos e garantia de entrega rigorosa de 100% dos prazos estabelecidos.</li>
+                    <li>Pesquisa de serviços em nuvem AWS e implementação de automações com <strong class="metric">AWS Lambda</strong> para orquestração de cargas de trabalho, eliminando tarefas manuais repetitivas e economizando <strong class="metric">~15 horas semanais</strong> da equipe técnica.</li>
+                    <li>Acompanhamento e gestão de processos de monitoramento de infraestrutura (Amazon CloudWatch, S3) e aplicação de práticas de FinOps para contenção de custos, obtendo economia de <strong class="metric">20%</strong> nos recursos de nuvem.</li>
+                    <li>Desenvolvimento de painéis e dashboards estratégicos no <strong class="metric">Amazon QuickSight</strong> para acompanhamento de indicadores de desempenho operacional e apoio à tomada de decisão por stakeholders de negócio.</li>
+                    <li>Obtenção da certificação internacional <strong class="metric">AWS Certified Cloud Practitioner</strong>, validando competências em arquitetura de nuvem, segurança, redes e governança corporativa.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PROJETOS RELEVANTES: FERRAMENTAS, GOVERNANÇA & PROCESSOS -->
+        <div class="section">
+            <div class="section-title">Projetos & Gestão de Ferramentas Tecnológicas</div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-title">Governança de Ferramentas Operacionais & Sandboxing (Plataforma Hermes)</span>
+                    <span class="project-date">2026</span>
+                </div>
+                <div class="project-role">Arquiteto de Governança de TI, Políticas de Acesso & Suporte Operacional</div>
+                <ul>
+                    <li>Projetou e homologou como diretriz corporativa uma arquitetura de governança e isolamento que permitiu a operadores de negócio e usuários finais customizarem fluxos e dashboards com assistência tecnológica segura.</li>
+                    <li>Estruturou políticas de contrato operacional restrito (<code>.hermes/policy.json</code>), delimitando permissões e bloqueando expressamente acessos a arquivos de infraestrutura, Docker e bancos de produção, eliminando riscos de indisponibilidade.</li>
+                    <li>Implementou pré-visualizações efêmeras locais para validação prévia de alterações pelo usuário antes de qualquer publicação, além de esteira de testes automatizados e auto-deploy integrado via GitHub Actions.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-title">Certix – Sistema de Gestão de Fluxos e Emissão (V3L0Z / UNAMA)</span>
+                    <span class="project-date">2026</span>
+                </div>
+                <div class="project-role">Desenvolvedor & Analista de Fluxos Operacionais</div>
+                <ul>
+                    <li>Desenvolveu e implantou plataforma administrativa para gestão, emissão e validação de certificados acadêmicos, eliminando gargalos operacionais manuais e reduzindo tempo de atendimento a solicitações de usuários.</li>
+                    <li>Estruturou fluxos de trabalho simplificados com interfaces intuitivas (React/TypeScript) e validações robustas em tempo real, diminuindo em <strong class="metric">60%</strong> o número de chamados de suporte decorrentes de inconsistências cadastrais.</li>
+                    <li>Elaborou documentação técnica das rotinas de integração de API e guias de suporte para os operadores responsáveis pela alimentação e emissão de documentos.</li>
+                </ul>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-title">Sistema de Automação de Processos e Centralização de Dados (V3L0Z)</span>
+                    <span class="project-date">2025</span>
+                </div>
+                <div class="project-role">Engenheiro de Automação de Processos & Sustentação de Sistemas</div>
+                <ul>
+                    <li>Concebeu arquitetura de integração para centralização e consulta automatizada de dados em mais de <strong class="metric">30 tribunais</strong>, substituindo rotinas lentas de pesquisa manual por consultas automatizadas em background.</li>
+                    <li>Sustentação contínua de plataforma suportando de 50 a 100 usuários simultâneos com até 50k requisições diárias, mantendo padrões rigorosos de segurança e controle de permissões por perfil de usuário via autenticação JWT.</li>
+                    <li>Padronização e modularização de código que resultou em redução estimada de <strong class="metric">~30%</strong> no tempo de manutenção preventiva e evolução de rotinas operacionais.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FORMAÇÃO ACADÊMICA, CERTIFICAÇÕES & IDIOMAS -->
+        <div class="section">
+            <div class="section-title">Formação Acadêmica, Certificações & Idiomas</div>
+
+            <div class="education-item">
+                <div class="education-header">
+                    <span class="education-school">Amazon Web Services (AWS)</span>
+                    <span class="education-date">Emitida em Nov 2025</span>
+                </div>
+                <div class="education-degree"><strong>Certificação Oficial: AWS Certified Cloud Practitioner (CLF-C02)</strong> — Fundamentos de Nuvem, Infraestrutura, Segurança e Governança</div>
+            </div>
+
+            <div class="education-item" style="margin-top: 5px;">
+                <div class="education-header">
+                    <span class="education-school">Universidade da Amazônia (UNAMA)</span>
+                    <span class="education-date">Previsão: Dez 2028</span>
+                </div>
+                <div class="education-degree">Bacharelado em Ciência da Computação</div>
+            </div>
+
+            <div class="education-item" style="margin-top: 3px;">
+                <div class="education-header">
+                    <span class="education-school">Universidade da Amazônia (UNAMA)</span>
+                    <span class="education-date">Previsão: Dez 2026</span>
+                </div>
+                <div class="education-degree">Tecnólogo em Análise e Desenvolvimento de Sistemas (ADS)</div>
+            </div>
+
+            <div class="education-item" style="margin-top: 6px;">
+                <div class="education-degree">
+                    <strong>Idiomas:</strong> Inglês (Fluente / Nível Profissional — leitura, escrita e conversação técnica) | Português (Nativo)
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

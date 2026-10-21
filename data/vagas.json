@@ -236,5 +236,30 @@
     "dateAdded": "2026-10-15",
     "updatedAt": "2026-10-15",
     "aiReasoning": "Boa aderência técnica (82%). Alinhamento sólido em node.js, node, react, com gap secundário em mongodb."
+  },
+  {
+    "title": "Suporte Técnico, Manutenção e Serviços de TI",
+    "company": "Suporte TI & Operações",
+    "location": "Brasil / Híbrido ou Presencial",
+    "link": "https://vaga-suporte-ti-interna",
+    "score": 95,
+    "matchedSkills": [
+      "suporte técnico",
+      "pesquisa tecnológica",
+      "gestão de ferramentas",
+      "fluxos e processos",
+      "suporte a usuários"
+    ],
+    "missingSkills": [],
+    "description": "Suporte técnico, manutenção e outros serviços em tecnologia da informação. Atividades: Acessar as funções de pesquisa tecnológica; Acompanhamento da gestão de ferramentas, fluxos e processos; Acompanhamento no suporte aos usuários da área de TI.",
+    "aiReasoning": "Currículo sob medida de 2 páginas A4: suporte a usuários em larga escala, governança de ferramentas operacionais, gestão de fluxos/processos e pesquisa tecnológica.",
+    "id": "36f01323d7",
+    "status": "Currículo Gerado",
+    "queued": false,
+    "htmlPath": "archives/Suporte_TI_20261021/resume_suporte_ti.html",
+    "pdfPath": "archives/Suporte_TI_20261021/resume_suporte_ti.pdf",
+    "dateAdded": "2026-10-21",
+    "updatedAt": "2026-10-21",
+    "completedAt": "2026-10-21"
   }
 ]
