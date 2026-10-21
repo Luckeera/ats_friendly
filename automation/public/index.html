@@ -1342,8 +1342,8 @@
           <div class="notion-callout-box" id="notionMatchCallout">
             <span class="notion-callout-icon">💡</span>
             <div>
-              <strong style="display: block; margin-bottom: 4px;">Análise Semântica de Requisitos</strong>
-              <span id="notionMatchSummaryText">Compatibilidade calculada com base no seu currículo mestre.</span>
+              <strong style="display: block; margin-bottom: 4px;">Parecer & Leitura Semântica da IA</strong>
+              <span id="notionMatchSummaryText">Análise semântica e veredito técnico formulado pela IA.</span>
             </div>
           </div>
 
@@ -1683,11 +1683,11 @@
         missingSection.style.display = 'none';
       }
 
-      // Match Summary Text
+      // Match Summary Text / AI Reasoning
       document.getElementById('notionMatchSummaryText').textContent = 
-        score >= 90 ? `Excelente correspondência técnica (${score}%). O perfil atende aos requisitos solicitados pela vaga.` :
+        job.aiReasoning || (score >= 90 ? `Excelente correspondência técnica (${score}%). O perfil atende aos requisitos solicitados pela vaga.` :
         (score >= 70 ? `Boa aderência (${score}%). A vaga compartilha a maior parte das competências do currículo mestre.` :
-        `Match moderado (${score}%). Recomenda-se avaliar os gaps técnicos antes de aplicar.`);
+        `Match moderado (${score}%). Recomenda-se avaliar os gaps técnicos antes de aplicar.`));
 
       // Notion formatted body
       document.getElementById('modalJobDescription').innerHTML = formatNotionDescription(job.description, job.descriptionHtml);
@@ -1845,6 +1845,13 @@
                   </span>
                 `).join('')}
               </div>
+
+              ${job.aiReasoning ? `
+                <div style="font-size: 0.77rem; color: var(--fg-muted); margin-top: 8px; line-height: 1.4; display: flex; align-items: flex-start; gap: 6px; background: rgba(255,255,255,0.03); padding: 5px 8px; border-radius: 4px; border-left: 2px solid var(--emerald);">
+                  <span style="font-size: 0.85rem; line-height: 1;">💡</span>
+                  <span>${job.aiReasoning}</span>
+                </div>
+              ` : ''}
             </div>
 
             <!-- Job Actions -->

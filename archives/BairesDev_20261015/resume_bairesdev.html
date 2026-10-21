@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucas Valente - BairesDev</title>
     <style>
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,181 +19,114 @@
 
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.25;
+            line-height: 1.22;
             color: #000;
-            background: #f5f5f5;
-            font-size: 9.8pt;
+            background: #fff;
+            font-size: 9.0pt;
         }
 
         .container {
             max-width: 210mm;
             margin: 0 auto;
             background: #fff;
-            padding: 0.6in;
+            padding: 0.32in;
             min-height: 297mm;
             position: relative;
         }
 
-        @page {
-            size: A4 portrait;
-            margin: 0;
-        }
-
-        @media print {
-            body {
-                background: #fff;
-            }
-            .container {
-                padding: 0.4in;
-                margin: 0;
-                min-height: auto;
-            }
-            .job, .project, .education-item {
-                page-break-inside: avoid;
-                break-inside: avoid;
-            }
-        }
-
-        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #000;
-            padding-bottom: 6px;
+            padding-bottom: 3px;
         }
 
         .header h1 {
-            font-size: 18pt;
+            font-size: 16pt;
             font-weight: bold;
-            margin-bottom: 2px;
-            letter-spacing: 1px;
+            margin-bottom: 1px;
+            letter-spacing: 0.5px;
         }
 
         .header .title {
-            font-size: 10.5pt;
-            margin-bottom: 4px;
+            font-size: 9.5pt;
+            margin-bottom: 2px;
             font-weight: normal;
         }
 
         .contact {
-            font-size: 9pt;
-            line-height: 1.3;
+            font-size: 8.5pt;
+            line-height: 1.2;
         }
 
-        .contact a {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .contact a:hover {
-            text-decoration: underline;
-        }
-
-        /* Section Headers */
         .section {
-            margin-bottom: 10px;
+            margin-bottom: 4px;
         }
 
         .section-title {
-            font-size: 10.5pt;
+            font-size: 9.5pt;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            padding-bottom: 1px;
             border-bottom: 1px solid #000;
-            padding-bottom: 2px;
+            text-transform: uppercase;
         }
 
-        /* Summary */
         .summary {
             text-align: justify;
-            line-height: 1.3;
+            line-height: 1.22;
         }
 
-        /* Skills */
         .skills-grid {
-            line-height: 1.4;
+            line-height: 1.25;
         }
 
         .skill-category {
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
-        .skill-category strong {
-            font-weight: bold;
+        .job, .project {
+            margin-bottom: 3px;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
-        /* Experience */
-        .job {
-            margin-bottom: 8px;
-        }
-
-        .job-header {
+        .project-header, .job-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             margin-bottom: 1px;
         }
 
-        .job-title-company {
+        .project-title-company, .job-title-company {
             font-weight: bold;
-            font-size: 10pt;
+            font-size: 9.2pt;
         }
 
-        .job-date {
+        .project-date, .job-date {
             font-style: italic;
-            font-size: 9pt;
+            font-size: 8.5pt;
             color: #333;
         }
 
-        .job-position {
+        .project-position, .job-position {
             font-style: italic;
-            margin-bottom: 3px;
-            font-size: 9.5pt;
+            margin-bottom: 1px;
+            font-size: 8.8pt;
         }
 
-        .job ul {
-            margin-left: 16px;
-            margin-top: 2px;
+        .job ul, .project ul {
+            margin-left: 14px;
+            margin-top: 1px;
         }
 
-        .job li {
-            margin-bottom: 2px;
-            line-height: 1.3;
+        .job li, .project li {
+            margin-bottom: 0.5px;
+            line-height: 1.22;
         }
 
-        /* Projects */
-        .project {
-            margin-bottom: 6px;
-        }
-
-        .project-header {
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-
-        .project-header a {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .project-description {
-            line-height: 1.3;
-        }
-
-        .project ul {
-            margin-left: 16px;
-            margin-top: 2px;
-        }
-
-        .project li {
-            margin-bottom: 2px;
-            line-height: 1.3;
-        }
-
-        /* Education */
         .education-item {
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .education-header {
@@ -198,29 +137,35 @@
 
         .education-school {
             font-weight: bold;
+            font-size: 9pt;
         }
 
         .education-date {
             font-style: italic;
-            font-size: 9pt;
+            font-size: 8.5pt;
             color: #333;
         }
 
         .education-degree {
-            font-size: 9.5pt;
+            font-size: 8.8pt;
         }
 
-        /* Metrics highlighting */
-        strong.metric {
-            font-weight: bold;
+        @media print {
+            body { background: #fff; }
+            .container {
+                padding: 0.32in;
+                margin: 0;
+                min-height: auto;
+            }
         }
-    </style>
+    
+</style>
 </head>
 <body>
     <div class="container" id="resume-container">
         <div class="header">
             <h1>Lucas Valente de Lima</h1>
-            <div class="title">Senior Full-Stack Engineer (React, Node.js, TypeScript) - Remote Work | REF#303675 | Engenheiro de Software</div>
+            <div class="title">Senior Full-Stack Engineer (React, Node.js, TypeScript) | Engenheiro de Software</div>
             <div class="contact">
                 <a href="mailto:lvldgls@gmail.com">lvldgls@gmail.com</a> |
                 <a href="https://www.linkedin.com/in/lucas-lima-bb568b355/" target="_blank">LinkedIn</a> | 
@@ -230,9 +175,7 @@
 
         <div class="section">
             <div class="section-title">Resumo Profissional</div>
-            <div class="summary">
-                Profissional híbrido com forte atuação em Engenharia de Software e Dados na nuvem (AWS). Especialista na modernização de arquiteturas, migrando monólitos para microsserviços escaláveis que suportam <strong>5000+ usuários de 50+ instituições</strong>. Experiência sólida em DevOps, implementando pipelines CI/CD que reduziram o tempo de deploy em <strong>45%</strong>. Líder técnico com histórico de gestão de squads ágeis e otimização de custos de nuvem. Certificado AWS Cloud Practitioner, com proficiência avançada em Python, Ecossistema JavaScript (Node/React) e Arquitetura de Dados (ETL/Spark).
-            </div>
+            <div class="summary">Engenheiro de Software com forte especialização em Engenharia de Dados e Nuvem (AWS). Especialista no desenho de pipelines automatizados (ETL/ELT com Glue e PySpark) e modelagem dimensional em escala. Histórico comprovado de <strong>liderança técnica de squad</strong>, condução de code reviews e trabalho em <strong>equipe ágil com comunicação assíncrona</strong>. Pioneiro no uso de <strong>desenvolvimento assistido por IA</strong> (Claude Code, GitHub Copilot, MCP) para acelerar entregas críticas em 3x mantendo governança, FinOps e qualidade técnica. Certificado AWS Cloud Practitioner.</div>
         </div>
 
         <div class="section">
@@ -256,11 +199,10 @@
                 </div>
                 <div class="job-position">Engenheiro de Software & Fullstack Developer</div>
                 <ul>
-                    <li>Atuou na equipe responsável pela manutenção crítica e evolução evolutiva do sistema de laboratórios, com escalonamento de infraestrutura para suportar <strong>~3000-5000 usuários ativos</strong> (professores e equipes técnicas de operação) distribuídos em <strong>59+ unidades</strong> do Grupo SER Educacional.</li>
-                    <li>Liderou a refatoração de arquitetura Monolítica para <strong>Microsserviços</strong>, desacoplando o Frontend (React + Tailwind) do Backend (Django REST), resultando em um aumento de <strong>40% na performance</strong> de carregamento.</li>
-                    <li>Implementou cultura de DevOps e <strong>CI/CD</strong> utilizando Git, padronizando o processo de deploy e reduzindo falhas em produção em <strong>70%</strong>, <strong>diminuindo custos desnecessarios em 40%</strong>.</li>
-                    <li>Otimizou consultas SQL e validações (Forms/Models), reduzindo a latência média das requisições em <strong>30%</strong>.</li>
-                    <li>Colaborou em equipe ágil de <strong>9+ desenvolvedores</strong>, utilizando Jira e Vikunja para gestão de backlog e sprints.</li>
+                    <li>Atuação em <strong>equipe ágil multidisciplinar</strong> de 9+ desenvolvedores com <strong>comunicação assíncrona</strong>, garantindo suporte crítico e sustentação de sistemas para <strong>5000+ usuários ativos em 59+ unidades</strong>.</li>
+                    <li>Liderou a refatoração de arquitetura monolítica para <strong>Microsserviços escaláveis</strong>, desacoplando frontend reativo de APIs REST e gerando <strong>40% de ganho de performance</strong> no carregamento.</li>
+                    <li>Implementou cultura DevOps e esteira de <strong>CI/CD</strong> com automação de testes, reduzindo falhas em produção em <strong>70%</strong> e otimizando custos operacionais em 40%.</li>
+                    <li>Otimizou consultas SQL e validações relacionais, reduzindo a latência média das requisições em <strong>30%</strong>.</li>
                 </ul>
             </div>
 
@@ -271,113 +213,48 @@
                 </div>
                 <div class="job-position">Engenheiro de Dados AWS & Líder de Squad</div>
                 <ul>
-                    <li><strong>Liderança Técnica:</strong> <strong>Liderou Squad de 4 engenheiros</strong>, conduzindo Code Reviews e garantindo 100% dos prazos de entrega.</li>
-                    <li>Projetou pipelines de dados (ETL) com <strong>AWS Glue e PySpark</strong>, automatizando a ingestão (Raw -> Refined) e reduzindo o tempo de processamento manual em <strong>~15 horas semanais</strong>.</li>
-                    <li>Desenvolveu automações com <strong>AWS Lambda</strong> para orquestração de dados e crawlers no S3.</li>
-                    <li>Aplicou práticas de FinOps (Lifecycle policies, otimização de instâncias), gerando uma economia estimada de <strong>20% nos custos</strong> de infraestrutura.</li>
-                    <li>Criou dashboards no <strong>Amazon QuickSight</strong> para visualização estratégica de dados consolidados.</li>
-                    <li>Utilizou desenvolvimento assistido por IA (Claude Code, Copilot, MCP) para <strong>entregar features 3x mais rápido (2-3 dias vs. 1-2 semanas)</strong></li>
+                    <li><strong>Liderança Técnica:</strong> Liderou squad ágil de 4 engenheiros, conduzindo code reviews diários e garantindo 100% de pontualidade nas entregas.</li>
+                    <li><strong>Aceleração com Inteligência Artificial:</strong> Utilizou desenvolvimento assistido por IA (Claude Code, Copilot, MCP) para <strong>entregar soluções 3x mais rápido</strong> com qualidade assegurada.</li>
+                    <li>Projetou pipelines de dados (ETL) com <strong>AWS Glue e PySpark</strong>, automatizando ingestão e reduzindo o tempo de processamento manual em ~15 horas semanais.</li>
+                    <li>Aplicou práticas de FinOps e automações serverless com AWS Lambda, gerando economia estimada de <strong>20% nos custos de nuvem</strong>.</li>
                 </ul>
             </div>
+    
         </div>
 
         <div class="section">
-            <div class="section-title">Projetos & Portfólio Técnico</div>
+<div class="section-title">Projetos & Portfólio Técnico</div>
 
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">Fintech Credit Scoring System (Vencedor de Hackathon - 1º Lugar)</div>
-                    <div class="job-date">Maio 2026</div>
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-title-company">Pipeline Analítico Serverless em Nuvem (AWS & PySpark)</span>
+                    <span class="project-date">2025</span>
                 </div>
-                <div class="job-position">Fullstack Engineer & Architect</div>
+                <div class="project-position">Engenheiro de Dados AWS</div>
                 <ul>
-                    <li>🏆 Premiado com o <strong>1º lugar na Hackathon Universitária</strong>, reconhecido pela excelência técnica e arquitetura escalável utilizando <strong>Next.js, TypeScript e Supabase</strong>.</li>
-                    <li>Desenvolveu um motor de decision de crédito multidimensional, implementando algoritmos que analisam simultaneamente 5 pilares para gerar scores automatizados.</li>
-                    <li>Implementou dashboard administrativo de alta performance utilizando <strong>Supabase Realtime</strong> e segurança robusta via <strong>Row Level Security (RLS)</strong>.</li>
-                    <li>Construiu interface mobile-first responsiva utilizando <strong>Shadcn UI</strong> e feedback visual dinâmico.</li>
-                </ul>
-            </div>
-
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">Certix – Sistema de Gestão e Emissão de Certificados (V3L0Z)</div>
-                    <div class="job-date">Maio 2026</div>
-                </div>
-                <div class="job-position">Fullstack Developer (TDD Specialist)</div>
-                <ul>
-                    <li>Desenvolveu plataforma administrativa robusta com <strong>React e TypeScript</strong>, implementando rotas dinâmicas e interfaces reativas para otimizar fluxos de trabalho.</li>
-                    <li>Estabeleceu cultura de <strong>TDD (Test-Driven Development)</strong> utilizando <strong>Vitest</strong> no Frontend e <strong>Pytest</strong> no Backend, reduzindo drasticamente débitos técnicos.</li>
-                    <li>Projetou APIs RESTful escaláveis com <strong>Django REST Framework (DRF)</strong> utilizando filtros complexos e modelagem relacional.</li>
-                    <li>Arquitetura da camada de consumo de APIs utilizando o padrão <i>Service Pattern</i> para separação de lógica de negócio e interface.</li>
+                    <li>Estruturou arquitetura de Data Lake no Amazon S3 e processou mais de <strong>1,5 milhão de registros</strong> com AWS Glue e PySpark.</li>
+                    <li>Construiu dashboards estratégicos no Amazon QuickSight consolidando KPIs para múltiplos stakeholders com visualizações em tempo real.</li>
+                    <li>Entregou a solução completa em 1 semana (50% antes do prazo previsto) via práticas ágeis e automação com IA.</li>
                 </ul>
             </div>
 
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">Astros – Rede Social Acadêmica Interdisciplinar</div>
-                    <div class="job-date">Abril 2026</div>
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-title-company">Fintech Credit Scoring System (1º Lugar Hackathon)</span>
+                    <span class="project-date">2026</span>
                 </div>
-                <div class="job-position">Backend Engineer & Solution Architect</div>
+                <div class="project-position">Fullstack Engineer & Architect</div>
                 <ul>
-                    <li>Projetou e implementou aplicação full-stack de ponta a ponta com <strong>FastAPI e React</strong> para facilitar o networking acadêmico.</li>
-                    <li>Estruturou modelagem de dados complexa utilizando <strong>SQLModel</strong>, com relacionamentos <i>Many-to-Many</i> e otimização de performance via <i>selectinload</i>.</li>
-                    <li>Desenvolveu motor de "Idea Pitches" com lógica de negócio personalizada e controle de status centralizado.</li>
-                    <li>Implementou autenticação robusta via <strong>OAuth2 com JWT</strong> e camada de serviços centralizada no frontend.</li>
+                    <li>🏆 Premiado com o <strong>1º lugar na Hackathon Universitária</strong> por arquitetura escalável e inovadora em Next.js e TypeScript.</li>
+                    <li>Desenvolveu motor de decision de crédito multidimensional analisando 5 pilares com dashboard em tempo real via Supabase.</li>
+                    <li>Liderança colaborativa em equipe multidisciplinar sob prazo enxuto com foco em usabilidade e performance.</li>
                 </ul>
             </div>
-            
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">App Leão (Fiscalização & Transparência)</div>
-                    <div class="job-date">Dez 2025</div>
-                </div>
-                <div class="job-position">Arquiteto de Soluções, DevOps & Fullstack Mobile</div>
-                <ul>
-                    <li>Desenvolveu app mobile de alta performance com <strong>React Native e NativeWind</strong>, focado em UX fluida.</li>
-                    <li>Arquitetou Backend em <strong>Node.js com Fastify</strong>, alcançando throughput <strong>1.5x superior ao Express</strong>.</li>
-                    <li>Implementou arquitetura orientada a eventos com <strong>BullMQ (Filas) e Redis (Cache)</strong> para processamento assíncrono escalável.</li>
-                    <li>Configurou esteira completa de <strong>CI/CD e Deploy em Cloud</strong>, aumentando a velocidade de deploy em <strong>45%</strong>.</li>
-                </ul>
-            </div>
-
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">Sistema de Automação Jurídica (V3L0Z)</div>
-                    <div class="job-date">Jun 2025</div>
-                </div>
-                <div class="job-position">Backend Engineer</div>
-                <ul>
-                    <li>Arquitetura e desenvolvimento de API RESTful utilizando <strong>Django REST Framework</strong>, voltada para automação e centralização de dados processuais de tribunais brasileiros.</li>
-                    <li>Estruturação de backend preparado para integração com <strong>30+ tribunais</strong>, com modelagem flexível para suportar múltiplos padrões e variações de dados jurídicos.</li>
-                    <li>Sistema suportando atualmente <strong>50–100 usuários simultâneos</strong>, com arquitetura projetada para escalar além de <strong>1.000+ usuários concorrentes</strong>.</li>
-                    <li>Processamento médio de <strong>10k–50k requisições diárias</strong> (300k–1,5M/mês), com planejamento técnico para suportar <strong>1M+ requisições/dia</strong> (30M+/mês).</li>
-                    <li>Implementação completa de autenticação e autorização baseada em <strong>JWT</strong>, garantindo segurança no acesso a endpoints sensíveis e segregação de permissões por perfil de usuário.</li>
-                    <li>Organização modular da aplicação (services, serializers, viewsets e separação de responsabilidades), resultando em redução estimada de <strong>~30%</strong> no tempo de manutenção e evolução de novas funcionalidades.</li>
-                    <li>Aplicação consistente de boas práticas de engenharia (padronização RESTful, versionamento de endpoints, validação estruturada e organização de camadas), reduzindo retrabalho técnico e prevenindo correções complexas em produção em <strong>35%</strong>.</li>
-                    <li>Estruturação do código orientada à escalabilidade e futuras implementações de cache distribuído e processamento assíncrono, diminuindo riscos arquiteturais à medida que o volume de requisições cresce.</li>
-                    <li>Centralização automatizada de dados processuais, reduzindo dependência de consultas manuais e aumentando a eficiência operacional do fluxo jurídico.</li>
-                </ul>
-            </div>
-
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title-company">Desafio de Engenharia de Dados – Pipeline Analítico em AWS | Compass UOL</div>
-                    <div class="job-date">Jul. 2025</div>
-                </div>
-                <div class="job-position">Engenheiro de Dados AWS</div>
-                <ul>
-                    <li>Desenvolvi pipeline de dados serverless ponta a ponta, processando <strong>1,5 milhão+ de registros</strong> provenientes de duas fontes CSV de grande escala (1M+ e 500K+ linhas).</li>
-                    <li>Estruturei arquitetura de Data Lake no <strong>Amazon S3</strong>, implementando ingestão automatizada com <strong>AWS Lambda</strong>, garantindo escalabilidade e organização dos dados.</li>
-                    <li>Realizei transformação, limpeza e normalização dos dados utilizando <strong>AWS Glue (Spark)</strong>, assegurando integridade e preparação para consumo analítico.</li>
-                    <li>Construí dashboard analítico interativo no <strong>AWS QuickSight</strong>, consolidando múltiplas fontes em KPIs unificados para análise de <strong>5 stakeholders</strong>.</li>
-                    <li>Entreguei a solução completa em <strong>1 semana (50% antes do prazo</strong> previsto de 2 semanas), demonstrando alta capacidade de execução e domínio da stack de dados da AWS.</li>
-                    <li>Substituí análises manuais por um fluxo automatizado e escalável de BI, permitindo exploração estruturada de grandes volumes de dados.</li>
-                </ul>
-            </div>
+      
         </div>
 
         <div class="section">
-            <div class="section-title">Formação Acadêmica, Idiomas & Certificações</div>
+<div class="section-title">Formação Acadêmica, Idiomas & Certificações</div>
             <div class="education-item">
                 <div class="education-header">
                     <span class="education-school">Amazon Web Services (AWS)</span>

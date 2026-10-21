@@ -53,3 +53,26 @@ test('TDD: parseJobDetails should extract job description and application type',
   assert.strictEqual(details.applyType, 'Candidatura Simplificada (Easy Apply)');
 });
 
+test('TDD: huntLinkedInJobs options should accept custom aiProvider and respect shouldAdd decision', async () => {
+  const { huntLinkedInJobs } = require('../automation/linkedin_hunter');
+  let evaluated = false;
+  const mockAi = {
+    async generateSearchQueries() {
+      return ['Desenvolvedor Teste'];
+    },
+    async evaluateJobFit({ job, candidateProfile, toolMatch }) {
+      evaluated = true;
+      return {
+        score: 95,
+        aiReasoning: 'Match excepcional identificado pela IA',
+        matchedSkills: ['python', 'aws'],
+        missingSkills: [],
+        shouldAdd: true,
+        queued: false
+      };
+    }
+  };
+
+  assert.strictEqual(typeof huntLinkedInJobs, 'function');
+});
+

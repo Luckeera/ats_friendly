@@ -15,6 +15,7 @@ const HEADERS = [
   'location',
   'matchedSkills',
   'missingSkills',
+  'aiReasoning',
   'status',
   'pdfPath',
   'link',
@@ -110,12 +111,14 @@ function saveJobsToCsv(newJobs, csvPath) {
         score: job.score !== undefined ? job.score : current.score,
         matchedSkills: job.matchedSkills || current.matchedSkills,
         missingSkills: job.missingSkills || current.missingSkills,
+        aiReasoning: job.aiReasoning || current.aiReasoning || '',
         status: (current.status && current.status !== 'Pendente') ? current.status : (job.status || 'Pendente'),
         pdfPath: current.pdfPath || job.pdfPath || ''
       });
     } else {
       jobsByLink.set(job.link, {
         ...job,
+        aiReasoning: job.aiReasoning || '',
         status: job.status || 'Pendente',
         pdfPath: job.pdfPath || '',
         dateAdded: job.dateAdded || today

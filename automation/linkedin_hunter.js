@@ -5,6 +5,8 @@ const { extractProfile, calculateMatch, detectApplicationType } = require('./mat
 const { saveJobsToCsv } = require('./spreadsheet_manager');
 const { defaultStore } = require('./job_store');
 const { processQueue } = require('./queue_processor');
+const { getAiProvider } = require('./ai_provider');
+const { getLatestMasterResumePath } = require('./master_manager');
 
 /**
  * LinkedIn Hunter Module
@@ -105,25 +107,26 @@ async function scrapeJobPage(page, jobUrl) {
 
 async function huntLinkedInJobs(options = {}) {
   const {
-    keywords = [
-      'Desenvolvedor Python Junior',
-      'Engenheiro de Dados Junior',
-      'Desenvolvedor Fullstack Node React'
-    ],
+    aiProvider = getAiProvider(),
+    keywords = null,
     location = 'Brasil',
     timeWindow = 'week',
     maxPerKeyword = 3,
-    masterResumePath = path.resolve(__dirname, '../src/master/v3/master_resume.html'),
+    masterResumePath = getLatestMasterResumePath(),
     csvOutputPath = path.resolve(__dirname, '../vagas.csv')
   } = options;
 
-  console.log('🚀 Iniciando LinkedIn Hunter (Modo On-Demand / Guest)...');
+  console.log('🚀 Iniciando LinkedIn Hunter (Modo On-Demand / Guest guiado por IA)...');
 
   // Carrega e extrai perfil do candidato
   const masterHtml = fs.readFileSync(masterResumePath, 'utf-8');
   const candidateProfile = extractProfile(masterHtml);
   console.log(`👤 Perfil carregado: ${candidateProfile.title || 'Candidato'}`);
   console.log(`🛠️  Skills mapeadas no currículo: ${candidateProfile.skills.length} tecnologias`);
+
+  // IA define a estratégia e os termos de busca caso não fornecidos explicitamente
+  const searchKeywords = keywords || (await aiProvider.generateSearchQueries(candidateProfile));
+  console.log(`🎯 Estratégia de busca formulada pela IA: [${searchKeywords.join(', ')}]`);
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -139,18 +142,35 @@ async function huntLinkedInJobs(options = {}) {
     });
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-    for (const kw of keywords) {
+    for (const kw of searchKeywords) {
       const url = buildSearchUrl(kw, location, timeWindow);
       const cards = await scrapeJobSearch(page, url, maxPerKeyword);
-      console.log(`📋 Encontradas ${cards.length} vagas para "${kw}"`);
+      console.log(`📋 Encontradas ${cards.length} vagas brutas para "${kw}"`);
 
       for (const card of cards) {
         try {
           console.log(`  ➔ Inspecionando: ${card.title} em ${card.company}...`);
           const details = await scrapeJobPage(page, card.link);
 
-          // Calcula match
-          const matchResult = calculateMatch(details.description, candidateProfile);
+          // 1. Sinal auxiliar de ferramentas (match heurístico)
+          const toolMatch = calculateMatch(details.description, candidateProfile);
+
+          // 2. Leitura semântica e decisão final executada pela IA
+          const rawJob = { ...card, ...details };
+          const aiDecision = await aiProvider.evaluateJobFit({
+            job: rawJob,
+            candidateProfile,
+            toolMatch
+          });
+
+          // Se a IA descartou a vaga (incompatível / ruído)
+          if (!aiDecision.shouldAdd) {
+            console.log(`  🛑 [Decisão da IA] Descartada: ${card.title} em ${card.company}`);
+            console.log(`     Motivo: ${aiDecision.aiReasoning}`);
+            continue;
+          }
+
+          console.log(`  💡 [Decisão da IA] Aprovada (${aiDecision.score}%): ${aiDecision.aiReasoning}`);
 
           const jobRecord = {
             title: card.title,
@@ -159,21 +179,23 @@ async function huntLinkedInJobs(options = {}) {
             link: card.link,
             posted: card.posted,
             applyType: details.applyType,
-            score: matchResult.score,
-            matchedSkills: matchResult.matchedSkills,
-            missingSkills: matchResult.missingSkills,
+            score: aiDecision.score,
+            aiReasoning: aiDecision.aiReasoning,
+            matchedSkills: aiDecision.matchedSkills,
+            missingSkills: aiDecision.missingSkills,
             description: details.description.slice(0, 1000),
-            descriptionHtml: details.descriptionHtml ? details.descriptionHtml.slice(0, 4000) : ''
+            descriptionHtml: details.descriptionHtml ? details.descriptionHtml.slice(0, 4000) : '',
+            queued: Boolean(aiDecision.queued)
           };
 
           // Salva no JobStore (atualiza estado e sincroniza CSV)
           const stored = defaultStore.upsertJob(jobRecord);
           processedJobs.push(stored);
 
-          // Se for Top Match (90%+), dispara geração imediata do currículo sob medida
-          if (matchResult.isTopMatch) {
-            console.log(`  🔥 Match alto (${matchResult.score}%) detectado! Iniciando geração automática do currículo...`);
-            await processQueue({ store: defaultStore });
+          // Se a IA marcou como prioritária na fila, dispara geração automática do currículo adaptado
+          if (aiDecision.queued) {
+            console.log(`  🔥 [Decisão da IA] Vaga prioritária na fila! Gerando currículo adaptado de 1 página...`);
+            await processQueue({ store: defaultStore, aiProvider });
           }
         } catch (err) {
           console.warn(`  ⚠️ Falha ao inspecionar vaga ${card.title}: ${err.message}`);
@@ -181,9 +203,7 @@ async function huntLinkedInJobs(options = {}) {
       }
     }
 
-    console.log(`\n💾 ${processedJobs.length} vagas consolidadas no painel e na planilha.`);
-    return processedJobs;
-
+    console.log(`\n💾 ${processedJobs.length} vagas consolidadas no painel e na planilha pela IA.`);
     return processedJobs;
   } finally {
     await browser.close();
