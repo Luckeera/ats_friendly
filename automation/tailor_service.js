@@ -3,6 +3,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { defaultStore } = require('./job_store');
 const { getAiProvider } = require('./ai_provider');
+const { getLatestMasterResumePath } = require('./master_manager');
 
 /**
  * Tailor Service
@@ -16,7 +17,7 @@ async function tailorJobResume(options = {}) {
     jobId,
     store = defaultStore,
     aiProvider = getAiProvider(),
-    masterPath = path.resolve(__dirname, '../src/master/v3/master_resume.html'),
+    masterPath = getLatestMasterResumePath(),
     archivesDir = path.resolve(__dirname, '../archives')
   } = options;
 
