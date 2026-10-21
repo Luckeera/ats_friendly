@@ -7,10 +7,12 @@
  */
 
 const KNOWN_TECH_KEYWORDS = [
-  'python', 'django', 'fastapi', 'flask',
+  'python', 'django', 'fastapi', 'flask', 'pydantic',
   'node.js', 'node', 'express', 'fastify', 'typescript', 'javascript',
   'react', 'react native', 'next.js', 'tailwind', 'tailwindcss', 'shadcn',
   'sql', 'postgresql', 'mysql', 'sqlite', 'mongodb', 'redis', 'bullmq',
+  'drizzle', 'sqlalchemy',
+  'gemini', 'claude', 'whisper', 'codex',
   'aws', 's3', 'lambda', 'glue', 'athena', 'quicksight', 'ec2', 'cloudwatch',
   'pyspark', 'spark', 'pandas', 'etl', 'elt',
   'docker', 'kubernetes', 'terraform', 'ci/cd', 'github actions', 'linux',
