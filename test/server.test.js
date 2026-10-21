@@ -107,3 +107,39 @@ test('TDD Server: GET /preview/:id should serve resume HTML if generated', async
   }
 });
 
+test('TDD Server: GET /api/events should establish SSE stream and broadcast on changes', async () => {
+  const store = new JobStore(TEST_DB);
+  const server = createServer({ store });
+  await new Promise(resolve => server.listen(0, resolve));
+
+  const port = server.address().port;
+  let receivedData = '';
+
+  const clientReq = http.request({
+    hostname: '127.0.0.1',
+    port,
+    path: '/api/events',
+    method: 'GET'
+  }, (res) => {
+    assert.strictEqual(res.statusCode, 200);
+    assert.strictEqual(res.headers['content-type'], 'text/event-stream');
+    res.on('data', chunk => {
+      receivedData += chunk.toString();
+    });
+  });
+
+  clientReq.end();
+
+  // Aguarda evento inicial
+  await new Promise(resolve => setTimeout(resolve, 80));
+  assert.ok(receivedData.includes('"type":"connected"'), 'Should receive initial connected event');
+
+  // Dispara broadcast manual
+  server.broadcastUpdate({ type: 'jobs_updated' });
+  await new Promise(resolve => setTimeout(resolve, 80));
+  assert.ok(receivedData.includes('"type":"jobs_updated"'), 'Should receive broadcasted update event');
+
+  clientReq.destroy();
+  await new Promise(resolve => server.close(resolve));
+});
+

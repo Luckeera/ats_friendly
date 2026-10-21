@@ -35,6 +35,40 @@ function parseJsonBody(req) {
 function createServer(options = {}) {
   const store = options.store || defaultStore;
   const publicDir = path.resolve(__dirname, 'public');
+  const sseClients = new Set();
+
+  function broadcastUpdate(payload = { type: 'jobs_updated' }) {
+    const message = `data: ${JSON.stringify(payload)}\n\n`;
+    for (const client of sseClients) {
+      try {
+        client.write(message);
+      } catch (err) {
+        sseClients.delete(client);
+      }
+    }
+  }
+
+  // File watcher reativo no store para disparar SSE instantaneamente em caso de mutação
+  let fileWatcher = null;
+  let debounceTimer = null;
+  if (store && store.filePath) {
+    try {
+      const watchPath = store.filePath;
+      if (!fs.existsSync(watchPath)) {
+        const dir = path.dirname(watchPath);
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(watchPath, '[]', 'utf-8');
+      }
+      fileWatcher = fs.watch(watchPath, () => {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          broadcastUpdate({ type: 'jobs_updated', timestamp: Date.now() });
+        }, 120);
+      });
+    } catch (e) {
+      // Ignora falha de watch em ambientes sem suporte
+    }
+  }
 
   const server = http.createServer(async (req, res) => {
     const parsedUrl = new URL(req.url, 'http://localhost');
@@ -56,6 +90,24 @@ function createServer(options = {}) {
       if (method === 'GET' && pathname === '/api/jobs') {
         const jobs = store.getJobs();
         return sendJson(res, 200, jobs);
+      }
+
+      // 1.5. API: Server-Sent Events (SSE) para atualização reativa instantânea
+      if (method === 'GET' && pathname === '/api/events') {
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache, no-transform',
+          'Connection': 'keep-alive',
+          'Access-Control-Allow-Origin': '*'
+        });
+
+        res.write(`data: ${JSON.stringify({ type: 'connected', timestamp: Date.now() })}\n\n`);
+        sseClients.add(res);
+
+        req.on('close', () => {
+          sseClients.delete(res);
+        });
+        return;
       }
 
       // 2. API: Listar vagas na fila
@@ -149,6 +201,19 @@ function createServer(options = {}) {
       sendJson(res, 500, { error: err.message });
     }
   });
+
+  server.on('close', () => {
+    if (fileWatcher) {
+      try { fileWatcher.close(); } catch (e) {}
+    }
+    if (debounceTimer) clearTimeout(debounceTimer);
+    for (const client of sseClients) {
+      try { client.end(); } catch (e) {}
+    }
+    sseClients.clear();
+  });
+
+  server.broadcastUpdate = broadcastUpdate;
 
   return server;
 }

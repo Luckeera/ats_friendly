@@ -12,7 +12,7 @@ Em vez de editar arquivos estáticos, este projeto utiliza uma abordagem baseada
 - **Automação de PDF (1 Página A4):** Geração de PDFs via Headless Browser (Edge/Puppeteer), com corte milimétrico e auditoria automatizada de páginas.
 - **LinkedIn Hunter Seguro (Modo Guest / On-Demand):** Varredura pública sem credenciais ou login, eliminando qualquer risco de banimento de conta.
 - **Motor de Match & Gap Analysis:** Cálculo semântico de aderência técnica (0-100%) entre a descrição da vaga e as competências do currículo mestre.
-- **Dashboard Web Interativo:** Painel visual em `http://localhost:3000` com polling em tempo real, badges de score, modal de preview e botões de enfileiramento para o Agente CLI.
+- **Dashboard Web Interativo (Realtime SSE):** Painel visual em `http://localhost:3000` com atualizações reativas instantâneas via Server-Sent Events (SSE) e File Watcher no `data/vagas.json`, badges de score, modal Notion de preview e botões de enfileiramento para o Agente CLI (sem polling contínuo e sem repaints desnecessários).
 - **Sincronização em Planilha e JSON:** Exportação contínua para [vagas.csv](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/vagas.csv) (com BOM UTF-8 para Excel) e persistência em [data/vagas.json](file:///C:/Users/Lucas/Desktop/CODE/AAA/curriculo/data/vagas.json).
 - **Camada Desacoplada de IA (AI Provider Layer):** Arquitetura plug-and-play que suporta motor local heurístico (offline), Google Gemini API e OpenAI/Groq/Ollama, preparando a solução para operar tanto via CLI quanto como SaaS.
 - **Extração de Projetos (Feature B):** Processamento automático de pastas de projetos em `@new_project/project/` e `@new_project/OBSERVATIONS.md` para gerar resumos técnicos em `@new_exp/new/`.

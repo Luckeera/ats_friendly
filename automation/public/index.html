@@ -1442,10 +1442,21 @@
     // -------------------------------------------------------------
     // Data Fetching & Polling
     // -------------------------------------------------------------
-    async function fetchJobs() {
+    let lastJobsSnapshot = '';
+
+    async function fetchJobs(force = false) {
       try {
         const res = await fetch('/api/jobs');
-        allJobs = await res.json();
+        const jobs = await res.json();
+        const currentSnapshot = JSON.stringify(jobs);
+
+        // Se os dados não mudaram e não foi forçado, evita repintar o DOM desnecessariamente
+        if (!force && currentSnapshot === lastJobsSnapshot) {
+          return;
+        }
+
+        lastJobsSnapshot = currentSnapshot;
+        allJobs = jobs;
         updateStats();
         renderJobs();
 
@@ -1464,6 +1475,32 @@
         }
       } catch (err) {
         console.error('Erro ao buscar vagas:', err);
+      }
+    }
+
+    function initRealtime() {
+      if (!window.EventSource) {
+        // Fallback passivo para browsers muito antigos sem EventSource
+        return;
+      }
+
+      try {
+        const evtSource = new EventSource('/api/events');
+
+        evtSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'jobs_updated') {
+              fetchJobs();
+            }
+          } catch (e) {}
+        };
+
+        evtSource.onerror = () => {
+          // O navegador tenta reconectar automaticamente ao SSE
+        };
+      } catch (err) {
+        console.warn('Realtime SSE indisponível:', err);
       }
     }
 
@@ -1900,8 +1937,8 @@
 
     // Inicialização
     initTheme();
-    fetchJobs();
-    setInterval(fetchJobs, 3000);
+    fetchJobs(true);
+    initRealtime();
   </script>
 </body>
 </html>
