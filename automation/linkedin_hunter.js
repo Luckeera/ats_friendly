@@ -4,7 +4,6 @@ const path = require('path');
 const { extractProfile, calculateMatch, detectApplicationType } = require('./match_engine');
 const { saveJobsToCsv } = require('./spreadsheet_manager');
 const { defaultStore } = require('./job_store');
-const { processQueue } = require('./queue_processor');
 const { getAiProvider } = require('./ai_provider');
 const { getLatestMasterResumePath } = require('./master_manager');
 
@@ -192,10 +191,9 @@ async function huntLinkedInJobs(options = {}) {
           const stored = defaultStore.upsertJob(jobRecord);
           processedJobs.push(stored);
 
-          // Se a IA marcou como prioritária na fila, dispara geração automática do currículo adaptado
+          // Se a IA marcou como prioritária na fila, registra para o Agente CLI processar
           if (aiDecision.queued) {
-            console.log(`  🔥 [Decisão da IA] Vaga prioritária na fila! Gerando currículo adaptado de 1 página...`);
-            await processQueue({ store: defaultStore, aiProvider });
+            console.log(`  📬 [Fila do Agente] Vaga priorizada e adicionada à fila para o Agente CLI.`);
           }
         } catch (err) {
           console.warn(`  ⚠️ Falha ao inspecionar vaga ${card.title}: ${err.message}`);

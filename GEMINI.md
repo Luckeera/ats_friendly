@@ -16,6 +16,13 @@
 - **Safe Guest-Mode Scraping:** Public LinkedIn scraping must run strictly in unauthenticated guest mode to eliminate account suspension risks.
 - **On-Demand CLI Agent Execution:** The architecture operates purely on-demand when invoked by the user in the CLI. Avoid 24/7 background daemons or external message brokers (e.g., RabbitMQ, Redis, BullMQ).
 - **Lightweight Queue Semantics:** The "fila" is managed as an explicit boolean flag (`queued: true/false`) in `data/vagas.json`. The web dashboard at `http://localhost:3000` enables visual curation and queue marking, while the CLI agent processes marked jobs when triggered by chat.
+- **Agent as Tailoring Engine:** When the user requests in chat to process a specific job or queued jobs (e.g., "processe as vagas da fila" or "gere o currículo para a vaga X"), the CLI Agent itself performs the contextual tailoring:
+  1. Inspect `data/vagas.json` for jobs where `queued: true` (or matching the specified company/title).
+  2. Read the job description and requirements from `data/vagas.json` and the active master resume via `automation/master_manager.js`.
+  3. Selectively filter and align the experiences and projects from the master resume to match the target position, ensuring standard semantic structure and single-column ATS formatting.
+  4. Write the tailored HTML file to `archives/<Company>_<Date>/resume_<company>.html` calibrated to fit on exactly 1 page A4.
+  5. Compile the PDF via `node automation/generate_pdf.js --input "<htmlPath>" --output "<pdfPath>" --max-pages 1`.
+  6. Update `data/vagas.json` (or via `defaultStore.markJobCompleted(jobId, { htmlPath, pdfPath })`), setting `status: 'Currículo Gerado'` and `queued: false`. This immediately surfaces the generated resume with preview and download buttons in the web dashboard at `http://localhost:3000`.
 - **Pluggable AI Adapter Layer:** The tailor and matching engines must remain decoupled from specific AI backends via `automation/ai_provider.js` (supporting Local Heuristic, Gemini API, and OpenAI-compatible endpoints) to allow future SaaS migration for non-technical users.
 
 ## Future Integrations - Email Tracking Security & Privacy Mandate

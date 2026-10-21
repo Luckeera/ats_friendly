@@ -58,16 +58,14 @@ npm run hunt
 ```
 - Coleta oportunidades recentes no LinkedIn sem autenticação.
 - Calcula o score de compatibilidade contra a versão mestre ativa (resolvida dinamicamente via `automation/master_manager.js`, por padrão a maior versão em `src/master/vX/`).
-- Vagas com **Match >= 90%** geram automaticamente o currículo adaptado de 1 página em `/archives/`.
-- Vagas com **Match < 90%** ficam registradas como pendentes na planilha e no dashboard.
+- Vagas com **Match >= 90%** (ou priorizadas pela IA) são automaticamente marcadas na fila (`queued: true`) no painel e no `data/vagas.json`.
+- Vagas com **Match < 90%** ficam registradas no dashboard e podem ser marcadas manualmente via botão **`+ Marcar p/ o Agente`**.
 
-### 3. Fila de Geração para Vagas (<90%)
-1. No painel web (`http://localhost:3000`), clique no botão **`+ Marcar p/ o Agente`** na vaga desejada.
-2. No chat do Agente CLI, solicite: *"Processe as vagas da fila"*, ou execute diretamente:
-   ```bash
-   npm run process:queue
-   ```
-3. O status mudará dinamicamente para **"Currículo Gerado"** e você poderá ver o preview no modal do painel.
+### 3. Fila de Geração e Criação sob Medida pelo Agente CLI
+1. No painel web (`http://localhost:3000`), visualize as vagas coletadas e clique em **`+ Marcar p/ o Agente`** na oportunidade desejada (ou confira as já pré-enfileiradas com Match >= 90%).
+2. No chat do Agente CLI, envie uma mensagem normal solicitando a criação (ex: *"Processe as vagas da fila"* ou *"Gere o currículo para a vaga da empresa X"*).
+3. O Agente CLI analisa a descrição da vaga e o currículo mestre ativo, adapta o conteúdo com inteligência contextual em 1 página A4 sob medida, compila o PDF e atualiza `data/vagas.json`.
+4. O status mudará instantaneamente para **"Currículo Gerado"** no painel web, habilitando os botões de visualização e download no dashboard.
 
 ### 4. Auditoria de Páginas
 Para garantir que nenhum currículo arquivado ultrapasse o limite de uma página A4:
